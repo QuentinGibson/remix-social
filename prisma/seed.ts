@@ -17,12 +17,12 @@ async function seed() {
   const user = await prisma.user.create({
     data: {
       email,
-      name: "Kickback-User",
       password: {
         create: {
           hash: hashedPassword,
         },
       },
+      name: "Kickback-User",
     },
   });
   const createPost = (id: string) => {
