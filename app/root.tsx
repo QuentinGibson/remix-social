@@ -74,6 +74,9 @@ export default function App() {
                     <Link className={linkClassName} to="/login">
                       Login
                     </Link>
+                    <Link className={linkClassName} to="/join">
+                      Sign Up
+                    </Link>
                   </li>
                 )}
               </ul>

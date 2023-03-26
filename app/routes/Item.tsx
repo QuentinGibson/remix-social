@@ -67,6 +67,7 @@ const Item = ({
     <article
       ref={ref}
       key={id}
+      role="article"
       className="mx-auto relative max-w-xl sm:pb-16 sm:pt-8"
     >
       <div className="bg-white rounded-t flex justify-between items-center">
@@ -161,15 +162,23 @@ const Item = ({
         <div className="flex gap-7">
           <div className="flex gap-1 items-center">
             {!like ? (
-              <button onClick={handleLike}>
+              <button
+                className="like-button"
+                role="button"
+                onClick={handleLike}
+              >
                 <RiHeartLine />
               </button>
             ) : (
-              <button onClick={handleUnlike}>
+              <button
+                className="like-button"
+                role="button"
+                onClick={handleUnlike}
+              >
                 <RiHeartFill />
               </button>
             )}
-            <p className="text-sm font-light leading-loose text-gray-900">
+            <p className="text-sm font-light leading-loose text-gray-900 total-likes">
               {likes.length}
             </p>
           </div>
