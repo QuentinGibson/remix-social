@@ -62,8 +62,6 @@ async function seed() {
       title,
       image: imageUrls[randomIndex],
       userId: user.id,
-      userName: user.name,
-      userAvatar: user.avatar,
     };
 
     return prisma.post.upsert({
