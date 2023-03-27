@@ -4,6 +4,7 @@
 // and it will log out the cookie value you can use to interact with the server
 // as that new user.
 
+import { faker } from "@faker-js/faker";
 import { installGlobals } from "@remix-run/node";
 import { parse } from "cookie";
 
@@ -23,7 +24,7 @@ async function createAndLogin(email: string) {
   const user = await createUser(
     email,
     "myreallystrongpassword",
-    "dannyPhantom"
+    faker.internet.userName()
   );
 
   const response = await createUserSession({

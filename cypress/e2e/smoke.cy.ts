@@ -1,4 +1,5 @@
 import { faker } from "@faker-js/faker";
+import { getUser } from "~/session.server";
 
 describe("smoke tests", () => {
   afterEach(() => {
@@ -63,7 +64,7 @@ describe("smoke tests", () => {
     cy.get(
       "form[action='/api/forms/newcomment'] button[type='submit']"
     ).click();
-    cy.get("ul#comments li:last-child").should("contain.text", comment);
+    cy.get("ul#comments li:first-child").should("contain.text", comment);
   });
   // it("should allow you to create a new post", () => {
 

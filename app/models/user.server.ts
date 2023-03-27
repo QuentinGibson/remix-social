@@ -40,6 +40,14 @@ export async function createUser(
           hash: hashedPassword,
         },
       },
+      settings: {
+        create: {
+          notifications: true,
+          privacy: "none",
+          accessibility: "none",
+          theme: "light",
+        },
+      },
     },
   });
 }
@@ -75,4 +83,15 @@ export async function verifyLogin(
   const { password: _password, ...userWithoutPassword } = userWithPassword;
 
   return userWithoutPassword;
+}
+
+export async function getUserSettings(id: User["id"]) {
+  try {
+    return await prisma.user.findFirst({
+      where: { id },
+      include: { settings: true },
+    });
+  } catch (error: any) {
+    return { ok: false, message: error.message };
+  }
 }

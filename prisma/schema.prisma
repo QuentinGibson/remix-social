@@ -35,7 +35,7 @@ model Post {
   image     String
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  user      User   @relation(fields: [userId],  references: [id], onDelete: Cascade)
+  user      User   @relation(fields: [userId],  references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId    String
   seens     Seen[]
   likes     Like[]
@@ -45,8 +45,8 @@ model Post {
 model Seen {
   id        String @id @default(cuid())
   createdAt DateTime  @default(now())
-  user      User @relation(fields: [userId], references: [id])
-  post      Post @relation(fields: [postId], references: [id])
+  user      User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  post      Post @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId    String
   postId    String
 
@@ -56,8 +56,8 @@ model Seen {
 model Comment {
   id      String @id @default(cuid())
   createdAt DateTime  @default(now())
-  user    User @relation(fields: [userId], references: [id])
-  post    Post @relation(fields: [postId], references: [id])
+  user    User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  post    Post @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   body    String
   userId  String
   postId  String
@@ -67,8 +67,8 @@ model Comment {
 model Like {
   id      String @id @default(cuid())
   createdAt DateTime  @default(now())
-  user User @relation(fields: [userId], references: [id])
-  post Post @relation(fields: [postId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String
   postId String
   @@unique([userId, postId])
@@ -82,6 +82,6 @@ model UserSettings {
   notifications Boolean?
   privacy      String?
   accessibility String?
-  user         User   @relation(fields: [userId], references: [id])
+  user         User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId       String @unique
 }

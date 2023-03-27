@@ -52,7 +52,7 @@ export default function App() {
                 {user ? (
                   <>
                     <li className="">
-                      <Link className={linkClassName} to={`/user/${user.id}`}>
+                      <Link className={linkClassName} to={`/settings`}>
                         Edit User
                       </Link>
                     </li>
