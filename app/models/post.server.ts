@@ -21,18 +21,36 @@ export async function getPosts(page: number) {
 }
 
 export async function getUserFeed(userId: string, page: number) {
+  const blockedPosts = await prisma.blockedPost.findMany({
+    where: {
+      userId: userId,
+    },
+    select: {
+      postId: true,
+    },
+  });
+  const blockedPostIds = blockedPosts.map((blockedPost) => blockedPost.postId);
+
   const posts = await prisma.post.findMany({
     skip: (page - 1) * items,
     take: items,
     orderBy: {
       createdAt: "desc",
     },
+    where: {
+      NOT: {
+        id: { in: blockedPostIds },
+      },
+    },
     include: {
       likes: true,
+      user: true,
+      comments: true,
     },
   });
+  const count = await prisma.post.count();
 
-  return { posts, page };
+  return { posts, page, count };
 }
 
 export async function getCount() {

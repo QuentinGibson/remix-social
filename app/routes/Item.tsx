@@ -22,6 +22,7 @@ const Item = ({
   const ref = useRef<HTMLDivElement>(null);
   const likeFetcher = useFetcher();
   const sessionUser = useOptionalUser();
+  const blockFetcher = useFetcher();
   const [queryParams] = useSearchParams();
   const { styles, attributes } = usePopper(referenceElement, popperElement, {
     modifiers: [
@@ -56,6 +57,13 @@ const Item = ({
   }, [id, likeFetcher, like, sessionUser]);
   const togglePopper = () => {
     setShowPopper(!showPopper);
+  };
+
+  const handleBlock = () => {
+    blockFetcher.submit(
+      { postId: id },
+      { method: "post", action: "/api/forms/block" }
+    );
   };
   const userQuery = new URLSearchParams(queryParams);
   userQuery.set("userId", user.id);
@@ -110,25 +118,13 @@ const Item = ({
             >
               <ul>
                 <li>
-                  <Link
-                    to={{ pathname: "/user", search: userQuery.toString() }}
-                  >
-                    See user
-                  </Link>
+                  <Link to={{ pathname: `/user/${user.id}` }}>See user</Link>
                 </li>
                 <li>
-                  <Link
-                    to={{ pathname: "/posts", search: postQuery.toString() }}
-                  >
-                    View Page
-                  </Link>
+                  <Link to={{ pathname: `/posts/${id}` }}>View Page</Link>
                 </li>
                 <li>
-                  <Link
-                    to={{ pathname: "/block", search: postQuery.toString() }}
-                  >
-                    Block Post
-                  </Link>
+                  <a onClick={handleBlock}>Block Post</a>
                 </li>
               </ul>
               <div

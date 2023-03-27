@@ -8,8 +8,9 @@ import {
 } from "@remix-run/react";
 import { useEffect } from "react";
 
-import { getPosts } from "~/models/post.server";
+import { getPosts, getUserFeed } from "~/models/post.server";
 import Item from "~/routes/Item";
+import { getUser } from "~/session.server";
 import { useOptionalUser } from "~/utils";
 
 type LoaderData = {
@@ -20,7 +21,11 @@ type LoaderData = {
 export const loader = async ({ request }: DataFunctionArgs) => {
   const url = new URL(request.url);
   const page = url.searchParams.get("page") || 1;
-  const data = await getPosts(Number(page));
+  const user = await getUser(request);
+
+  const data = user
+    ? await getUserFeed(user.id, Number(page))
+    : await getPosts(Number(page));
   return json(data);
 };
 

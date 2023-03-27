@@ -20,6 +20,7 @@ model User {
   likes     Like[]
   comments  Comment[]
   settings  UserSettings?
+  blockedPosts BlockedPost[]
 
 }
 
@@ -40,6 +41,7 @@ model Post {
   seens     Seen[]
   likes     Like[]
   comments  Comment[]
+  blockedPosts BlockedPost[]
 }
 
 model Seen {
@@ -83,4 +85,13 @@ model UserSettings {
   accessibility String?
   user         User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId       String @unique
+}
+
+model BlockedPost {
+  id        String  @id @default(cuid())
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  post      Post    @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    String
+  @@unique([userId, postId])
 }
