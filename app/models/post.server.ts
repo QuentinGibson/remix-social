@@ -71,6 +71,9 @@ export async function getPost(id: Post["id"]) {
             },
           },
         },
+        orderBy: {
+          createdAt: "desc",
+        },
       },
       likes: true,
       user: true,

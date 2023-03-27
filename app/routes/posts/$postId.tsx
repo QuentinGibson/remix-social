@@ -84,7 +84,9 @@ export default function PostRoute() {
           <div>
             <ul id="comments">
               {post.comments &&
-                post.comments.map((comment) => <Comment comment={comment} />)}
+                post.comments.map((comment) => (
+                  <Comment key={comment.id} comment={comment} />
+                ))}
             </ul>
           </div>
         </footer>
