@@ -32,7 +32,7 @@ export async function loader({ request }: LoaderArgs) {
 export default function App() {
   const user = useOptionalUser();
   const linkClassName =
-    "mx-2 my-2 bg-indigo-700 transition duration-150 ease-in-out hover:bg-indigo-600 rounded text-white px-8 py-2 text-sm";
+    "mx-2 my-2 bg-blue-600 transition duration-150 ease-in-out hover:bg-blue-400 rounded text-white px-4 py-2 text-sm";
   return (
     <html lang="en" className="h-full">
       <head>
@@ -42,10 +42,19 @@ export default function App() {
         <Links />
       </head>
       <body className="h-full">
-        <header className="bg-black h-20 fixed w-full z-50 top-0">
+        <header className="bg-cyan-900 h-20 fixed w-full z-50 top-0">
           <div className="mx-24 h-full">
             <nav className="flex box-border  items-center w-full h-full justify-between">
-              <Link to="/" className="text-white font-extrabold text-4xl">
+              <Link
+                to="/"
+                className="text-white font-extrabold text-2xl flex items-center"
+              >
+                <img
+                  src="/group-me-logo.png"
+                  alt="Group-me symbol"
+                  width={30}
+                  className="mr-2"
+                />
                 GroupMe
               </Link>
               <ul className="flex items-center list-none gap-4">
