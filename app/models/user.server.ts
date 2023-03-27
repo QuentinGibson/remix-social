@@ -1,7 +1,9 @@
 import type { Password, User } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import invariant from "tiny-invariant";
 
 import { prisma } from "~/db.server";
+import { validateEmail } from "~/utils";
 
 export type { User } from "@prisma/client";
 
@@ -90,6 +92,42 @@ export async function getUserSettings(id: User["id"]) {
     return await prisma.user.findFirst({
       where: { id },
       include: { settings: true },
+    });
+  } catch (error: any) {
+    throw new Error("Error getting user! " + error.message);
+  }
+}
+
+export async function updateUserById(id: User["id"], formData: FormData) {
+  const theme = formData.get("theme");
+  const notifications = formData.get("notifications") === "on";
+  const privacy = formData.get("privacy");
+  const email = formData.get("useremail");
+  const accessibility = formData.get("accessibility");
+  invariant(typeof theme === "string", "theme must be a string");
+  invariant(typeof privacy === "string", "privacy must be a string");
+  invariant(
+    typeof accessibility === "string",
+    "accessibility must be a string"
+  );
+  invariant(
+    validateEmail(email),
+    "email must be a email that ends with a @domain"
+  );
+  try {
+    return await prisma.user.update({
+      where: { id },
+      data: {
+        email: email,
+        settings: {
+          update: {
+            theme,
+            notifications,
+            privacy,
+            accessibility,
+          },
+        },
+      },
     });
   } catch (error: any) {
     return { ok: false, message: error.message };

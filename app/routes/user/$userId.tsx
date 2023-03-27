@@ -25,9 +25,16 @@ export default function UserRoute() {
       >
         <div className="flex">
           <div className="w-20 mr-10">
-            <img src={user.avatar} alt="Avatar" className="rounded-full" />
+            <img
+              id="user-avatar"
+              src={user.avatar}
+              alt="Avatar"
+              className="rounded-full"
+            />
           </div>
-          <h1 className="">{user.name}</h1>
+          <h1 id="user-name" className="">
+            {user.name}
+          </h1>
         </div>
       </div>
     </main>
