@@ -79,7 +79,7 @@ const Item = ({
           />
           <Link
             to={`/user/${user.id}`}
-            className="ml-4 text-base font-semibold leading-4 text-gray-800 "
+            className="ml-4 text-base font-semibold leading-4 text-gray-800 post-user"
           >
             {user.name}
           </Link>
@@ -148,8 +148,10 @@ const Item = ({
         </div>
       </div>
       <div className="bg-white py-3">
-        <p className="text-2xl font-medium leading-loose text-gray-500 dark:text-gray-900">
-          <Link to={`/posts/${id}`}>{title}</Link>
+        <p className="text-2xl font-medium leading-loose text-gray-500 dark:text-gray-900 post-title">
+          <Link className="post-anchor" to={`/posts/${id}`}>
+            {title}
+          </Link>
         </p>
       </div>
 

@@ -82,7 +82,7 @@ export default function PostRoute() {
           </commentFetcher.Form>
 
           <div>
-            <ul>
+            <ul id="comments">
               {post.comments &&
                 post.comments.map((comment) => <Comment comment={comment} />)}
             </ul>
