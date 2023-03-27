@@ -87,7 +87,6 @@ export default function App() {
         <div className="my-24">
           <Outlet />
         </div>
-        <footer className="bg-black h-20 w-full fixed bottom-0 z-50"></footer>
         <ScrollRestoration />
         <Scripts />
         <LiveReload />

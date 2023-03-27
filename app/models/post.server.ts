@@ -68,6 +68,7 @@ export async function getPost(id: Post["id"]) {
           user: {
             select: {
               name: true,
+              avatar: true,
             },
           },
         },

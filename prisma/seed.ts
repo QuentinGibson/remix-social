@@ -70,9 +70,33 @@ async function seed() {
       create: post,
     });
   };
+  const createComments = async (postId: string) => {
+    const generateCommentMessage = () => {
+      const sentenceCount = faker.datatype.number({ min: 1, max: 3 }); // Generate 1-3 sentences
+      let commentMessage = faker.lorem.sentence(); // Generate first sentence
+
+      // Generate additional sentences and concatenate them to form the comment message
+      for (let i = 1; i < sentenceCount; i++) {
+        commentMessage += " " + faker.lorem.sentence();
+      }
+
+      return commentMessage;
+    };
+    return prisma.comment.create({
+      data: {
+        userId: user.id,
+        postId: postId,
+        body: generateCommentMessage(),
+      },
+    });
+  };
   for (let i = 0; i < 100; i++) {
-    await createPost(i.toString());
+    const post = await createPost(i.toString());
+    for (let j = 0; j < 3; j++) {
+      await createComments(post.id);
+    }
   }
+
   console.log(`Database has been seeded. 🌱`);
 }
 

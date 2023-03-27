@@ -61,7 +61,6 @@ model Comment {
   body    String
   userId  String
   postId  String
-  @@unique([userId, postId])
 }
 
 model Like {
