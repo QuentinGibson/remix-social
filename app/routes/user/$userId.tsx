@@ -1,12 +1,23 @@
 import { json, LoaderArgs } from "@remix-run/node";
-import { useCatch, useLoaderData } from "@remix-run/react";
+import { Link, useCatch, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
-import { getUserById } from "~/models/user.server";
-import { useUser } from "~/utils";
+import { getUserProfileById } from "~/models/user.server";
+import * as React from "react";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import * as timeago from "timeago.js";
+
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
 
 export async function loader({ params }: LoaderArgs) {
   invariant(params.userId, "postId not found");
-  const user = await getUserById(params.userId);
+  const user = await getUserProfileById(params.userId);
   if (!user) {
     throw new Response("Not Found", { status: 404 });
   }
@@ -15,16 +26,55 @@ export async function loader({ params }: LoaderArgs) {
 
 export default function UserRoute() {
   const { user } = useLoaderData<typeof loader>();
-  const sessionUser = useUser();
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
+
+  const CommentHistory = () => {
+    return (
+      <>
+        {user.comments.map((comment) => {
+          return (
+            <Link
+              className="block text-base border-b-2 border-solid border-slate-100 py-5 hover:bg-slate-100"
+              key={comment.id}
+              to={`/posts/${comment.postId}`}
+            >
+              <span>{comment.body}</span>
+            </Link>
+          );
+        })}
+      </>
+    );
+  };
+
+  const PostHistory = () => {
+    return (
+      <>
+        {user.posts.map((post) => {
+          return (
+            <Link
+              className="block text-base border-b-2 border-solid border-slate-100 py-5 hover:bg-slate-100"
+              key={post.id}
+              to={`/posts/${post.id}`}
+            >
+              <span className="font-semibold">
+                {post.title} - {timeago.format(post.createdAt)}
+              </span>
+            </Link>
+          );
+        })}
+      </>
+    );
+  };
 
   return (
     <main>
-      <div
-        className="w-1/3 mx-auto font-extrabold text-4xl pt-10"
-        id="container"
-      >
-        <div className="flex">
-          <div className="w-20 mr-10">
+      <div className="max-w-screen-md mx-auto pt-10 p-4" id="container">
+        <div className="flex mb-8 items-center">
+          <div className="w-16 mr-10">
             <img
               id="user-avatar"
               src={user.avatar}
@@ -32,9 +82,44 @@ export default function UserRoute() {
               className="rounded-full"
             />
           </div>
-          <h1 id="user-name" className="">
-            {user.name}
-          </h1>
+          <div>
+            <h1 id="user-name" className="font-bold text-lg">
+              {user.name}
+            </h1>
+            <div className="flex">
+              <div className="mr-8">
+                <p className="font-bold text-cyan-900">Posts</p>
+                <p>{user.posts.length}</p>
+              </div>
+              <div>
+                <p className="font-bold text-cyan-900">Comments</p>
+                <p>{user.comments.length}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <Box sx={{ width: "100%" }}>
+            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+              <Tabs
+                value={value}
+                onChange={handleChange}
+                aria-label="basic tabs example"
+              >
+                <Tab label="Posts" {...a11yProps(0)} />
+                <Tab label="Comments" {...a11yProps(1)} />
+              </Tabs>
+            </Box>
+            <div className="pr-16">
+              <TabPanel value={value} index={0}>
+                <PostHistory />
+              </TabPanel>
+            </div>
+            <TabPanel value={value} index={1}>
+              <CommentHistory />
+            </TabPanel>
+          </Box>
         </div>
       </div>
     </main>
@@ -55,4 +140,30 @@ export function CatchBoundary() {
   }
 
   throw new Error(`Unexpected caught response with status: ${caught.status}`);
+}
+function TabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+function a11yProps(index: number) {
+  return {
+    id: `simple-tab-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
+  };
 }

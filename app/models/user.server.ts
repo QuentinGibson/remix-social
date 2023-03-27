@@ -12,14 +12,10 @@ export async function getUserById(id: User["id"]) {
 }
 
 export async function getUserProfileById(id: User["id"]) {
-  try {
-    return prisma.user.findUnique({
-      where: { id },
-      include: { posts: true, comments: true },
-    });
-  } catch (error: any) {
-    return { ok: false, message: error.message };
-  }
+  return prisma.user.findUnique({
+    where: { id },
+    include: { posts: true, comments: true },
+  });
 }
 
 export async function getUserByEmail(email: User["email"]) {

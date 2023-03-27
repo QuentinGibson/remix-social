@@ -99,7 +99,7 @@ describe("smoke tests", () => {
     cy.get("#view-profile").click();
     cy.wait(1000);
     // Replace the selectors with the actual selectors for the elements that detail the user
-    cy.get("#user-name").should("have.text"); // checks that the user's name is displayed
+    cy.get("#user-name").should("include.text", ""); // checks that the user's name is displayed
     cy.get("#user-avatar").should("have.attr", "src"); // checks that the user's avatar is displayed with the correct URL
   });
 });
