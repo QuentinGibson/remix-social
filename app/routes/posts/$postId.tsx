@@ -2,11 +2,12 @@ import type { LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useCatch, useFetcher, useLoaderData } from "@remix-run/react";
 import { useCallback } from "react";
-import { RiHeartFill, RiHeartLine } from "react-icons/ri";
 import invariant from "tiny-invariant";
 import { getPost } from "~/models/post.server";
 import { useOptionalUser } from "~/utils";
 import Comment from "./Comment";
+import LikeButton from "./LikeButton";
+import NewComment from "./NewComment";
 import "./post.css";
 
 export async function loader({ params }: LoaderArgs) {
@@ -22,7 +23,6 @@ export default function PostRoute() {
   const { post } = useLoaderData<typeof loader>();
   const userLikes = post.likes.map((like) => like.userId);
   const likeFetcher = useFetcher();
-  const commentFetcher = useFetcher();
   const user = useOptionalUser();
   const like = user ? userLikes.includes(user.id) : false;
 
@@ -53,34 +53,22 @@ export default function PostRoute() {
 
   return (
     <main className="flex flex-col">
-      <div className="mx-auto w-1/3">
-        <h3 className="text-4xl font-bold mb-12">{post.title}</h3>
-        <img src={post.image} alt="The post you submitted" />
-        <div className="flex mt-8">
-          {!like ? (
-            <button onClick={handleLike}>
-              <RiHeartLine />
-            </button>
-          ) : (
-            <button onClick={handleUnlike}>
-              <RiHeartFill />
-            </button>
-          )}
-          <p>{post.likes.length}</p>
+      <div className="mx-auto max-w-screen-md">
+        <h3 className="text-4xl font-bold mb-8">{post.title}</h3>
+        <img className="mb-6" src={post.image} alt="The post you submitted" />
+        <div className="flex">
+          <LikeButton
+            like={like}
+            count={post.likes.length}
+            likeHandler={handleLike}
+            unlikeHandler={handleUnlike}
+          />
         </div>
         <footer>
-          <h3>Comments: {post.comments.length}</h3>
-          <commentFetcher.Form method="post" action="/api/forms/newcomment">
-            <input type="hidden" name="postId" value={post.id} />
-            <textarea
-              className="border-solid border-2 border-gray-900 w-full"
-              name="comment"
-              placeholder="Enter your new comment here!"
-              id="newcomment"
-            />
-            <button type="submit">Create Comment</button>
-          </commentFetcher.Form>
-
+          <h3 className="font-medium text-lg mb-2">
+            Comments: {post.comments.length}
+          </h3>
+          <NewComment postId={post.id} />
           <div>
             <ul id="comments">
               {post.comments &&
