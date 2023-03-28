@@ -124,7 +124,9 @@ const Item = ({
                   <Link to={{ pathname: `/posts/${id}` }}>View Page</Link>
                 </li>
                 <li>
-                  <a onClick={handleBlock}>Block Post</a>
+                  <a className="cursor-pointer" onClick={handleBlock}>
+                    Block Post
+                  </a>
                 </li>
               </ul>
               <div
