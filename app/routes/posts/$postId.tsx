@@ -1,9 +1,10 @@
 import { LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { useCatch, useLoaderData } from "@remix-run/react";
+import { useCatch, useFetchers, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { getPost } from "~/models/post.server";
 import { getUser } from "~/session.server";
+import { canBeOptimistic, useOptionalUser } from "~/utils";
 import Comment from "./Comment";
 import LikeButton from "./LikeButton";
 import NewComment from "./NewComment";
@@ -25,7 +26,7 @@ export default function PostRoute() {
   const { post, like } = useLoaderData<typeof loader>();
 
   return (
-    <main className="flex flex-col">
+    <main className="flex flex-col pt-4">
       <div className="mx-auto max-w-screen-md">
         <h3 className="text-4xl font-bold mb-8">{post.title}</h3>
         <img className="mb-6" src={post.image} alt="The post you submitted" />
@@ -39,10 +40,13 @@ export default function PostRoute() {
           <NewComment postId={post.id} />
           <div>
             <ul id="comments">
-              {post.comments &&
+              {post.comments ? (
                 post.comments.map((comment) => (
                   <Comment key={comment.id} comment={comment} />
-                ))}
+                ))
+              ) : (
+                <h3>No Comments! Add the first one</h3>
+              )}
             </ul>
           </div>
         </footer>

@@ -2,7 +2,7 @@ import * as timeago from "timeago.js";
 export default function Comment({ comment }: any) {
   return (
     <>
-      <li className="my-8">
+      <li className="my-8" key={comment.id}>
         <div className="flex items-center">
           <img
             className="rounded-full w-8 mr-2"

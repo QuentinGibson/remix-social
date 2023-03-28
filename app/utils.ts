@@ -66,6 +66,13 @@ export function useUser(): User {
   return maybeUser;
 }
 
+export function canBeOptimistic(fetcher: { state: string; data: any }) {
+  return (
+    fetcher.state === "submitting" ||
+    (fetcher.state === "loading" && fetcher.data?.type === "success")
+  );
+}
+
 export function validateEmail(email: unknown): email is string {
   return typeof email === "string" && email.length > 3 && email.includes("@");
 }

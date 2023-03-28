@@ -12,8 +12,8 @@ export const action = async ({ request }: DataFunctionArgs) => {
     invariant(commentBody, "Please enter body for your comment");
     invariant(postId, "Please enter a post id");
     const data = await createComment(user.id, postId, commentBody);
-    return json({ ok: true, message: data });
+    return json({ ok: true, message: data, intent: "newcomment" });
   } catch (error: any) {
-    return json({ ok: false, message: error.message });
+    return json({ ok: false, message: error.message, intent: "newcomment" });
   }
 };

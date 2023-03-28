@@ -11,6 +11,7 @@ export default function NewComment({ postId }: { postId: string }) {
     setCount(inputRef.current?.value?.length ?? 0);
   };
   const commentFetcher = useFetcher();
+
   return (
     <commentFetcher.Form method="post" action="/api/forms/newcomment">
       <input type="hidden" name="postId" value={postId} />
