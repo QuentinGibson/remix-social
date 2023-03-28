@@ -1,5 +1,4 @@
 import { useFetcher, useNavigation } from "@remix-run/react";
-import { useEffect } from "react";
 import { RiHeartLine, RiHeartFill } from "react-icons/ri";
 import { useOptionalUser } from "~/utils";
 
@@ -35,7 +34,7 @@ const LikeButton = ({ like, count, postId }: any) => {
         />
         <input type="hidden" name="postId" value={postId} />
         {user && <input type="hidden" name="userId" value={user.id} />}
-        <button className="text-lg mr-2" type="submit">
+        <button className={`text-lg mr-2 heart`} type="submit">
           {optimisticLike ? <RiHeartFill /> : <RiHeartLine />}
         </button>
         <p className="font-semibold">{count}</p>

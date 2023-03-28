@@ -1,3 +1,18 @@
 * {
     font-family: 'Hind Siliguri', sans-serif;
 }
+
+.heart {
+  color: hsl(2, 50%, 50%);
+  transform: scale(1.0);
+  transition: 0.1s ease-in-out;
+}
+.heart:hover {
+  transform: scale(1.2)
+}
+
+.heart:active {
+  transform: scale(0.9);
+  transition: 0.05s ease-in-out;
+}
+
