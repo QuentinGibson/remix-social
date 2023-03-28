@@ -34,30 +34,28 @@ export async function createUser(
   try {
     defaultTheme = await prisma.theme.findFirstOrThrow();
   } catch (error) {
-    {
-      defaultTheme = await createDefaultTheme();
-    }
+    defaultTheme = await createDefaultTheme();
+  }
 
-    return prisma.user.create({
-      data: {
-        email,
-        name,
-        password: {
-          create: {
-            hash: hashedPassword,
-          },
-        },
-        settings: {
-          create: {
-            notifications: true,
-            privacy: "none",
-            accessibility: "none",
-            theme: { connect: { id: defaultTheme.id } },
-          },
+  return prisma.user.create({
+    data: {
+      email,
+      name,
+      password: {
+        create: {
+          hash: hashedPassword,
         },
       },
-    });
-  }
+      settings: {
+        create: {
+          notifications: true,
+          privacy: "none",
+          accessibility: "none",
+          theme: { connect: { id: defaultTheme.id } },
+        },
+      },
+    },
+  });
 }
 
 export async function deleteUserByEmail(email: User["email"]) {
