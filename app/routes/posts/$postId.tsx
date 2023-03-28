@@ -1,8 +1,10 @@
 import { LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useCatch, useFetchers, useLoaderData } from "@remix-run/react";
+import { useState } from "react";
 import invariant from "tiny-invariant";
 import { getPost } from "~/models/post.server";
+import { useThemeContext } from "~/root";
 import { getUser } from "~/session.server";
 import { canBeOptimistic, useOptionalUser } from "~/utils";
 import Comment from "./Comment";
@@ -24,11 +26,13 @@ export async function loader({ params, request }: LoaderArgs) {
 
 export default function PostRoute() {
   const { post, like } = useLoaderData<typeof loader>();
+  const themeContext = useThemeContext();
+  const mood = themeContext.mood === "dark";
 
   return (
     <main className="flex flex-col pt-4">
       <div className="mx-auto max-w-screen-md">
-        <h3 className="text-4xl font-bold mb-8">{post.title}</h3>
+        <h3 className={`text-4xl font-bold mb-8`}>{post.title}</h3>
         <img className="mb-6" src={post.image} alt="The post you submitted" />
         <div className="flex">
           <LikeButton like={like} count={post.likes.length} postId={post.id} />

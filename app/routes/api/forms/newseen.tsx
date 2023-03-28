@@ -11,7 +11,6 @@ export const action: ActionFunction = async ({ request }) => {
   invariant(user, "User id must be provided");
   if (user) {
     const res = await createSeen(user.id, postId);
-    console.log(res);
   }
   return redirect("/");
 };

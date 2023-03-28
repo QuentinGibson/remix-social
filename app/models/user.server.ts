@@ -4,6 +4,7 @@ import invariant from "tiny-invariant";
 
 import { prisma } from "~/db.server";
 import { validateEmail } from "~/utils";
+import { createDefaultTheme } from "./theme.server";
 
 export type { User } from "@prisma/client";
 
@@ -34,16 +35,7 @@ export async function createUser(
     defaultTheme = await prisma.theme.findFirstOrThrow();
   } catch (error) {
     {
-      defaultTheme = await prisma.theme.create({
-        data: {
-          name: "default",
-          primary: "hsl(221, 16%, 21%)",
-          secondary: "hsl(219, 27%, 88%)",
-          accent: "hsl(230, 57%, 49%)",
-          accent2: "hsl(228, 100%, 78%)",
-          mood: "light",
-        },
-      });
+      defaultTheme = await createDefaultTheme();
     }
 
     return prisma.user.create({

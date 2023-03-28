@@ -1,10 +1,11 @@
 import * as timeago from "timeago.js";
 import { usePopper } from "react-popper";
-import { RiHeartFill, RiHeartLine, RiMore2Fill } from "react-icons/ri";
+import { RiMore2Fill } from "react-icons/ri";
 import { Link, useFetcher, useSearchParams } from "@remix-run/react";
-import { useCallback, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useOptionalUser } from "~/utils";
 import LikeButton from "./posts/LikeButton";
+import { useThemeContext } from "~/root";
 
 const Item = ({
   post: { id, title, image, likes, createdAt, comments, user },
@@ -18,6 +19,8 @@ const Item = ({
   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(
     null
   );
+  const themeContext = useThemeContext();
+  const mood = themeContext.mood === "dark";
   const [arrowElement, setArrowElement] = useState<HTMLDivElement | null>(null);
   const [showPopper, setShowPopper] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -31,6 +34,22 @@ const Item = ({
       { name: "offset", options: { offset: [0, 10] } },
     ],
   });
+  const [isHovered, setHovered] = useState(false);
+  const [isHoveredTitle, setHoveredTitle] = useState(false);
+  const handleHover = () => {
+    setHovered(true);
+  };
+
+  const handleLeave = () => {
+    setHovered(false);
+  };
+  const handleHoverTitle = () => {
+    setHoveredTitle(true);
+  };
+
+  const handleLeaveTitle = () => {
+    setHoveredTitle(false);
+  };
 
   const togglePopper = () => {
     setShowPopper(!showPopper);
@@ -65,6 +84,9 @@ const Item = ({
           <Link
             to={`/user/${user.id}`}
             className="ml-4 text-base font-semibold leading-4 text-gray-800 post-user"
+            onMouseEnter={handleHoverTitle}
+            onMouseLeave={handleLeaveTitle}
+            style={{ color: isHoveredTitle ? themeContext.accent : "" }}
           >
             {user.name}
           </Link>
@@ -124,7 +146,13 @@ const Item = ({
       </div>
       <div className="bg-white py-3">
         <p className="text-2xl font-medium leading-loose text-gray-500 dark:text-gray-900 post-title">
-          <Link className="post-anchor" to={`/posts/${id}`}>
+          <Link
+            onMouseEnter={handleHover}
+            onMouseLeave={handleLeave}
+            style={{ color: isHovered ? themeContext.accent : "" }}
+            className="post-anchor"
+            to={`/posts/${id}`}
+          >
             {title}
           </Link>
         </p>

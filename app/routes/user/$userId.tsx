@@ -8,6 +8,7 @@ import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import * as timeago from "timeago.js";
+import { useThemeContext } from "~/root";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -27,6 +28,7 @@ export async function loader({ params }: LoaderArgs) {
 export default function UserRoute() {
   const { user } = useLoaderData<typeof loader>();
   const [value, setValue] = React.useState(0);
+  const themeContext = useThemeContext();
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -88,11 +90,21 @@ export default function UserRoute() {
             </h1>
             <div className="flex">
               <div className="mr-8">
-                <p className="font-bold text-cyan-900">Posts</p>
+                <p
+                  style={{ color: themeContext.accent }}
+                  className="font-bold text-cyan-900"
+                >
+                  Posts
+                </p>
                 <p>{user.posts.length}</p>
               </div>
               <div>
-                <p className="font-bold text-cyan-900">Comments</p>
+                <p
+                  style={{ color: themeContext.accent }}
+                  className="font-bold text-cyan-900"
+                >
+                  Comments
+                </p>
                 <p>{user.comments.length}</p>
               </div>
             </div>
@@ -107,7 +119,11 @@ export default function UserRoute() {
                 onChange={handleChange}
                 aria-label="basic tabs example"
               >
-                <Tab label="Posts" {...a11yProps(0)} />
+                <Tab
+                  label="Posts"
+                  sx={{ color: themeContext.accent }}
+                  {...a11yProps(0)}
+                />
                 <Tab label="Comments" {...a11yProps(1)} />
               </Tabs>
             </Box>
