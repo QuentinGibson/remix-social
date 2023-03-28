@@ -6,7 +6,6 @@ import {
   useLoaderData,
   useSearchParams,
 } from "@remix-run/react";
-import { useEffect } from "react";
 
 import { getPosts, getUserFeed } from "~/models/post.server";
 import Item from "~/routes/Item";
@@ -48,15 +47,6 @@ export default function Index() {
   function didUserLike(post: { likes: any[] }) {
     const userIds = post.likes.map((like: any) => like.userId);
     return userIds.includes(sessionUser?.id);
-  }
-
-  const postFetcher = useFetcher();
-  let paginatePosts = canBeOptimistic(postFetcher);
-  if (paginatePosts) {
-    try {
-      console.log(postFetcher.data);
-      optimisticPosts = postFetcher.data.posts;
-    } catch (e) {}
   }
 
   const [queryParams] = useSearchParams();

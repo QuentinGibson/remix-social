@@ -22,10 +22,11 @@ const LikeButton = ({ like, count, postId }: any) => {
     }
   }
   return (
-    <div className="mb-2 flex">
+    <div className="flex">
       <likeFetcher.Form
         method="post"
         action={optimisticLike ? "/api/forms/deleteLike" : "/api/forms/newLike"}
+        className="flex justify-center"
       >
         <input
           type="hidden"

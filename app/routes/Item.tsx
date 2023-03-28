@@ -4,6 +4,7 @@ import { RiHeartFill, RiHeartLine, RiMore2Fill } from "react-icons/ri";
 import { Link, useFetcher, useSearchParams } from "@remix-run/react";
 import { useCallback, useRef, useState } from "react";
 import { useOptionalUser } from "~/utils";
+import LikeButton from "./posts/LikeButton";
 
 const Item = ({
   post: { id, title, image, likes, createdAt, comments, user },
@@ -31,30 +32,6 @@ const Item = ({
     ],
   });
 
-  const handleLike = useCallback(async () => {
-    if (!like && sessionUser) {
-      likeFetcher.submit(
-        { userId: sessionUser.id, postId: id },
-        {
-          method: "post",
-          action: `/api/forms/newlike`,
-          preventScrollReset: true,
-        }
-      );
-    }
-  }, [id, likeFetcher, like, sessionUser]);
-  const handleUnlike: any = useCallback(async () => {
-    if (like && sessionUser) {
-      likeFetcher.submit(
-        { userId: sessionUser.id, postId: id },
-        {
-          method: "post",
-          action: `/api/forms/deletelike`,
-          preventScrollReset: true,
-        }
-      );
-    }
-  }, [id, likeFetcher, like, sessionUser]);
   const togglePopper = () => {
     setShowPopper(!showPopper);
   };
@@ -161,26 +138,7 @@ const Item = ({
       <div className="bg-white flex w-full items-center py-5 justify-between box-border">
         <div className="flex gap-7">
           <div className="flex gap-1 items-center">
-            {!like ? (
-              <button
-                className="like-button"
-                role="button"
-                onClick={handleLike}
-              >
-                <RiHeartLine />
-              </button>
-            ) : (
-              <button
-                className="like-button"
-                role="button"
-                onClick={handleUnlike}
-              >
-                <RiHeartFill />
-              </button>
-            )}
-            <p className="text-sm font-light leading-loose text-gray-900 total-likes">
-              {likes.length}
-            </p>
+            <LikeButton like={like} postId={id} count={likes.length} />
           </div>
           <div className="flex gap-1 items-center">
             <svg
