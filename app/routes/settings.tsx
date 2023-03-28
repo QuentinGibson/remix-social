@@ -22,89 +22,107 @@ export default function SettingsPage() {
   }
   return (
     <div className="flex min-h-full flex-col justify-center">
-      <div className="mx-auto w-full max-w-md px-8">
-        <div>
-          <h1>Account</h1>
-          <Link id="view-profile" to={`/user/${user.id}`}>
-            View Profile
-          </Link>
+      <div className="mx-auto w-full max-w-screen-sm px-8">
+        <div className="flex justify-between items-center">
+          <h1 className="text-3xl font-semibold">Account</h1>
         </div>
         <userFetcher.Form method="post">
-          <label htmlFor="username">
+          <label className="text-2xl" htmlFor="username">
             Username:
             <br />
-            <input
-              type="text"
-              name="username"
-              id="username"
-              defaultValue={user.name}
-            />
-            <br />
           </label>
+          <input
+            className="bg-slate-300 border-slate-900 border-2 border-solid p-1 text-lg w-96"
+            type="text"
+            name="username"
+            id="username"
+            defaultValue={user.name}
+          />
+          <br />
           <label htmlFor="email">
             Email:
             <br />
-            <input
-              type="email"
-              name="useremail"
-              id="email"
-              defaultValue={user.email}
-            />
-            <br />
           </label>
+          <input
+            className="bg-slate-300 border-slate-900 border-2 border-solid p-1 text-lg w-96"
+            type="email"
+            name="useremail"
+            id="email"
+            defaultValue={user.email}
+          />
+          <br />
           <label htmlFor="theme">
             Theme:
             <br />
-            <select
-              defaultValue={user.settings?.theme ?? "light"}
-              name="theme"
-              id="theme"
-            >
-              <option value="light">Light</option>
-              <option value="dark">Dark</option>
-            </select>
-            <br />
           </label>
+          <select
+            className="bg-slate-300 border-slate-900 border-2 border-solid p-1 text-lg w-96"
+            defaultValue={user.settings?.theme ?? "light"}
+            name="theme"
+            id="theme"
+          >
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </select>
+          <br />
           <label htmlFor="notification">
             Notification:
             <br />
+          </label>
+          <div className="flex justify-start">
             <input
+              className="bg-slate-300 border-slate-900 border-2 border-solid p-1 text-lg"
               defaultChecked={user.settings?.notifications ?? false}
               type="checkbox"
               name="notifications"
               id="notifications"
             />
-            <br />
-          </label>
+          </div>
+          <br />
           <label htmlFor="accessibility">
             Accessibility:
             <br />
-            <select
-              name="accessibility"
-              id="accessibility"
-              defaultValue={user.settings?.accessibility ?? "none"}
-            >
-              <option value="none">None</option>
-              <option value="high-contrast">High Contrast</option>
-            </select>
-            <br />
           </label>
+          <select
+            className="bg-slate-300 border-slate-900 border-2 border-solid p-1 text-lg w-96"
+            name="accessibility"
+            id="accessibility"
+            defaultValue={user.settings?.accessibility ?? "none"}
+          >
+            <option value="none">None</option>
+            <option value="high-contrast">High Contrast</option>
+          </select>
+          <br />
           <label htmlFor="privacy">
             Privacy:
             <br />
-            <select
-              name="privacy"
-              id="privacy"
-              defaultValue={user.settings?.privacy ?? "none"}
-            >
-              <option value="private">Private</option>
-              <option value="none">None</option>
-            </select>
-            <br />
           </label>
-          <button id="save-profile" type="submit">
-            Save
-          </button>
+          <select
+            className="bg-slate-300 border-slate-900 border-2 border-solid p-1 text-lg w-96"
+            name="privacy"
+            id="privacy"
+            defaultValue={user.settings?.privacy ?? "none"}
+          >
+            <option value="private">Private</option>
+            <option value="none">None</option>
+          </select>
+          <br />
+          <div className="flex justify-between mt-4">
+            <button
+              id="save-profile"
+              type="submit"
+              className="bg-cyan-800 px-3 py-2 rounded-xl text-white"
+            >
+              Save
+            </button>
+            <Link
+              className="py-2 px-2 bg-slate-500 text-white rounded-lg hover:bg-slate-400"
+              id="view-profile"
+              to={`/user/${user.id}`}
+            >
+              View Profile
+            </Link>
+          </div>
         </userFetcher.Form>
       </div>
     </div>
