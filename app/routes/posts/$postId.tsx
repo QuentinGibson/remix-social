@@ -1,16 +1,9 @@
-import { LoaderArgs, redirect } from "@remix-run/node";
+import { LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import {
-  useCatch,
-  useFetcher,
-  useLoaderData,
-  useNavigation,
-} from "@remix-run/react";
-import { useCallback, useEffect } from "react";
+import { useCatch, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { getPost } from "~/models/post.server";
-import { getUser, requireUser } from "~/session.server";
-import { useOptionalUser } from "~/utils";
+import { getUser } from "~/session.server";
 import Comment from "./Comment";
 import LikeButton from "./LikeButton";
 import NewComment from "./NewComment";
@@ -30,58 +23,6 @@ export async function loader({ params, request }: LoaderArgs) {
 
 export default function PostRoute() {
   const { post, like } = useLoaderData<typeof loader>();
-  const user = useOptionalUser();
-  const navigation = useNavigation();
-  const likeFetcher = useFetcher();
-
-  let optimisticLike = like;
-  const isChangeing = navigation.state === "submitting" || "loading";
-
-  useEffect(() => {
-    if (isChangeing) {
-      const intent = navigation.formData?.get("intent");
-      if (intent === "unlike") {
-        optimisticLike = true;
-        console.log(`intent unlike`);
-      }
-      if (intent === "like") {
-        optimisticLike = false;
-        console.log(`intent like`);
-      }
-    }
-  }, [isChangeing]);
-  const handleLike = useCallback(async () => {
-    if (!user) {
-      return;
-    }
-    if (!like) {
-      likeFetcher.submit(
-        { userId: user.id, postId: post.id, intent: "like" },
-        {
-          method: "post",
-          replace: true,
-          action: `/api/forms/newlike`,
-          preventScrollReset: true,
-        }
-      );
-    }
-  }, [post.id, likeFetcher, like, user]);
-  const handleUnlike: any = useCallback(async () => {
-    if (!user) {
-      return;
-    }
-    if (like) {
-      likeFetcher.submit(
-        { userId: user.id, postId: post.id, intent: "unlike" },
-        {
-          method: "post",
-          replace: true,
-          action: `/api/forms/deletelike`,
-          preventScrollReset: true,
-        }
-      );
-    }
-  }, [post.id, likeFetcher, like, user?.id]);
 
   return (
     <main className="flex flex-col">
@@ -89,12 +30,7 @@ export default function PostRoute() {
         <h3 className="text-4xl font-bold mb-8">{post.title}</h3>
         <img className="mb-6" src={post.image} alt="The post you submitted" />
         <div className="flex">
-          <LikeButton
-            like={optimisticLike}
-            count={post.likes.length}
-            likeHandler={handleLike}
-            unlikeHandler={handleUnlike}
-          />
+          <LikeButton like={like} count={post.likes.length} postId={post.id} />
         </div>
         <footer>
           <h3 className="font-medium text-lg mb-2">

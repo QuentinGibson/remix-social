@@ -18,5 +18,5 @@ export const action: ActionFunction = async (RemixContext) => {
       },
     },
   });
-  return redirect(redirectURL);
+  return { ok: true, message: "successfully deleted like" };
 };
