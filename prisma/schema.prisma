@@ -99,11 +99,12 @@ model BlockedPost {
 
 model Theme {
   id        String  @id @default(cuid())
-  name      String
+  name      String  @unique
   primary   String
   secondary String
   accent    String
   accent2   String
   mood      String
   settings  UserSettings[] 
+
 }
