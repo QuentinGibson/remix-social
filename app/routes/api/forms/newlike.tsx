@@ -10,14 +10,14 @@ export const action: ActionFunction = async (RemixContext) => {
 
   invariant(redirectURL, "Must have a original url");
   try {
-    const res = await prisma.like.create({
+    await prisma.like.create({
       data: {
         user: { connect: { id: userId } },
         post: { connect: { id: postId } },
       },
     });
-    return json({ ok: true, message: res });
+    return json({ type: "success", intent: "like" });
   } catch (e: any) {
-    return json({ ok: false, message: e?.message });
+    return json({ type: "failure", intent: "like" });
   }
 };

@@ -1,37 +1,65 @@
-import type { LoaderArgs } from "@remix-run/node";
+import { LoaderArgs, redirect } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { useCatch, useFetcher, useLoaderData } from "@remix-run/react";
-import { useCallback } from "react";
+import {
+  useCatch,
+  useFetcher,
+  useLoaderData,
+  useNavigation,
+} from "@remix-run/react";
+import { useCallback, useEffect } from "react";
 import invariant from "tiny-invariant";
 import { getPost } from "~/models/post.server";
+import { getUser, requireUser } from "~/session.server";
 import { useOptionalUser } from "~/utils";
 import Comment from "./Comment";
 import LikeButton from "./LikeButton";
 import NewComment from "./NewComment";
 import "./post.css";
 
-export async function loader({ params }: LoaderArgs) {
+export async function loader({ params, request }: LoaderArgs) {
+  const user = await getUser(request);
   invariant(params.postId, "postId not found");
   const post = await getPost(params.postId);
   if (!post) {
     throw new Response("Not Found", { status: 404 });
   }
-  return json({ post });
+  const userLikes = post.likes.map((like) => like.userId);
+  const like = user ? userLikes.includes(user?.id) : false;
+  return json({ post, like });
 }
 
 export default function PostRoute() {
-  const { post } = useLoaderData<typeof loader>();
-  const userLikes = post.likes.map((like) => like.userId);
-  const likeFetcher = useFetcher();
+  const { post, like } = useLoaderData<typeof loader>();
   const user = useOptionalUser();
-  const like = user ? userLikes.includes(user.id) : false;
+  const navigation = useNavigation();
+  const likeFetcher = useFetcher();
 
+  let optimisticLike = like;
+  const isChangeing = navigation.state === "submitting" || "loading";
+
+  useEffect(() => {
+    if (isChangeing) {
+      const intent = navigation.formData?.get("intent");
+      if (intent === "unlike") {
+        optimisticLike = true;
+        console.log(`intent unlike`);
+      }
+      if (intent === "like") {
+        optimisticLike = false;
+        console.log(`intent like`);
+      }
+    }
+  }, [isChangeing]);
   const handleLike = useCallback(async () => {
-    if (!like && user) {
+    if (!user) {
+      return;
+    }
+    if (!like) {
       likeFetcher.submit(
-        { userId: user.id, postId: post.id },
+        { userId: user.id, postId: post.id, intent: "like" },
         {
           method: "post",
+          replace: true,
           action: `/api/forms/newlike`,
           preventScrollReset: true,
         }
@@ -39,11 +67,15 @@ export default function PostRoute() {
     }
   }, [post.id, likeFetcher, like, user]);
   const handleUnlike: any = useCallback(async () => {
-    if (like && user) {
+    if (!user) {
+      return;
+    }
+    if (like) {
       likeFetcher.submit(
-        { userId: user.id, postId: post.id },
+        { userId: user.id, postId: post.id, intent: "unlike" },
         {
           method: "post",
+          replace: true,
           action: `/api/forms/deletelike`,
           preventScrollReset: true,
         }
@@ -58,7 +90,7 @@ export default function PostRoute() {
         <img className="mb-6" src={post.image} alt="The post you submitted" />
         <div className="flex">
           <LikeButton
-            like={like}
+            like={optimisticLike}
             count={post.likes.length}
             likeHandler={handleLike}
             unlikeHandler={handleUnlike}
