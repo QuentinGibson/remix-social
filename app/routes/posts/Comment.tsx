@@ -1,4 +1,4 @@
-import * as timeago from "timeago.js";
+import TimeAgo from "react-timeago";
 export default function Comment({ comment }: any) {
   return (
     <>
@@ -11,7 +11,9 @@ export default function Comment({ comment }: any) {
           />
           <div className="flex justify-between items-center w-full">
             <p className="font-semibold">{comment.user.name}</p>
-            <p>{timeago.format(comment.createdAt)}</p>
+            <p>
+              <TimeAgo date={comment.createdAt} />
+            </p>
           </div>
         </div>
         <div className="mt-1">{comment.body}</div>

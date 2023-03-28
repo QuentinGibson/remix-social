@@ -1,4 +1,4 @@
-import * as timeago from "timeago.js";
+import TimeAgo from "react-timeago";
 import { usePopper } from "react-popper";
 import { RiMore2Fill } from "react-icons/ri";
 import { Link, useFetcher, useSearchParams } from "@remix-run/react";
@@ -93,7 +93,7 @@ const Item = ({
         </div>
         <div className="flex items-center">
           <p className="text-base font-medium leading-loose text-right text-gray-900 ">
-            {timeago.format(createdAt)}
+            <TimeAgo date={createdAt} />
           </p>
           <button
             type="button"
