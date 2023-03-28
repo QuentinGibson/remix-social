@@ -29,25 +29,43 @@ export async function createUser(
 ) {
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  return prisma.user.create({
-    data: {
-      email,
-      name,
-      password: {
-        create: {
-          hash: hashedPassword,
+  let defaultTheme;
+  try {
+    defaultTheme = await prisma.theme.findFirstOrThrow();
+  } catch (error) {
+    {
+      defaultTheme = await prisma.theme.create({
+        data: {
+          name: "default",
+          primary: "hsl(221, 16%, 21%)",
+          secondary: "hsl(219, 27%, 88%)",
+          accent: "hsl(230, 57%, 49%)",
+          accent2: "hsl(228, 100%, 78%)",
+          mood: "light",
+        },
+      });
+    }
+
+    return prisma.user.create({
+      data: {
+        email,
+        name,
+        password: {
+          create: {
+            hash: hashedPassword,
+          },
+        },
+        settings: {
+          create: {
+            notifications: true,
+            privacy: "none",
+            accessibility: "none",
+            theme: { connect: { id: defaultTheme.id } },
+          },
         },
       },
-      settings: {
-        create: {
-          notifications: true,
-          privacy: "none",
-          accessibility: "none",
-          theme: "light",
-        },
-      },
-    },
-  });
+    });
+  }
 }
 
 export async function deleteUserByEmail(email: User["email"]) {
@@ -85,10 +103,16 @@ export async function verifyLogin(
 
 export async function getUserSettings(id: User["id"]) {
   try {
-    return await prisma.user.findFirst({
+    const user = await prisma.user.findFirst({
       where: { id },
       include: { settings: true },
     });
+
+    const themeList = await prisma.theme.findMany({
+      select: { id: true, name: true },
+    });
+
+    return { user, themeList };
   } catch (error: any) {
     throw new Error("Error getting user! " + error.message);
   }
@@ -117,7 +141,7 @@ export async function updateUserById(id: User["id"], formData: FormData) {
         email: email,
         settings: {
           update: {
-            theme,
+            theme: { connect: { id: theme } },
             notifications,
             privacy,
             accessibility,
@@ -126,6 +150,6 @@ export async function updateUserById(id: User["id"], formData: FormData) {
       },
     });
   } catch (error: any) {
-    return { ok: false, message: error.message };
+    throw new Error("Error updatting user! " + error.message);
   }
 }

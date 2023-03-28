@@ -77,12 +77,13 @@ model Like {
 
 model UserSettings {
   id           String @id @default(cuid())
-  theme        String?
   language     String?
   layout       String?
   notifications Boolean?
   privacy      String?
   accessibility String?
+  theme         Theme @relation(fields: [themeId], references: [id])
+  themeId       String
   user         User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId       String @unique
 }
@@ -94,4 +95,15 @@ model BlockedPost {
   post      Post    @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId    String
   @@unique([userId, postId])
+}
+
+model Theme {
+  id        String  @id @default(cuid())
+  name      String
+  primary   String
+  secondary String
+  accent    String
+  accent2   String
+  mood      String
+  settings  UserSettings[] 
 }

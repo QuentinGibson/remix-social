@@ -5,7 +5,6 @@ import {
   LoaderArgs,
   redirect,
 } from "@remix-run/server-runtime";
-import invariant from "tiny-invariant";
 import { getUserSettings, updateUserById } from "~/models/user.server";
 import { requireUser } from "~/session.server";
 
@@ -15,8 +14,14 @@ export const loader = async ({ request }: LoaderArgs) => {
   return json(data);
 };
 export default function SettingsPage() {
-  const user = useLoaderData<typeof loader>();
+  const { user, themeList } = useLoaderData<typeof loader>();
   const userFetcher = useFetcher();
+
+  const themeListOptions = themeList.map((theme) => (
+    <option key={theme.id} value={theme.id}>
+      {theme.name}
+    </option>
+  ));
   if (!user) {
     throw redirect("/");
   }
@@ -39,7 +44,7 @@ export default function SettingsPage() {
             defaultValue={user.name}
           />
           <br />
-          <label htmlFor="email">
+          <label className="text-2xl" htmlFor="email">
             Email:
             <br />
           </label>
@@ -51,21 +56,20 @@ export default function SettingsPage() {
             defaultValue={user.email}
           />
           <br />
-          <label htmlFor="theme">
+          <label className="text-2xl" htmlFor="theme">
             Theme:
             <br />
           </label>
           <select
             className="bg-slate-300 border-slate-900 border-2 border-solid p-1 text-lg w-96"
-            defaultValue={user.settings?.theme ?? "light"}
+            defaultValue={user.settings?.themeId}
             name="theme"
             id="theme"
           >
-            <option value="light">Light</option>
-            <option value="dark">Dark</option>
+            {themeListOptions}
           </select>
           <br />
-          <label htmlFor="notification">
+          <label className="text-2xl" htmlFor="notification">
             Notification:
             <br />
           </label>
@@ -79,7 +83,7 @@ export default function SettingsPage() {
             />
           </div>
           <br />
-          <label htmlFor="accessibility">
+          <label className="text-2xl" htmlFor="accessibility">
             Accessibility:
             <br />
           </label>
@@ -93,7 +97,7 @@ export default function SettingsPage() {
             <option value="high-contrast">High Contrast</option>
           </select>
           <br />
-          <label htmlFor="privacy">
+          <label className="text-2xl" htmlFor="privacy">
             Privacy:
             <br />
           </label>

@@ -13,6 +13,16 @@ async function seed() {
   });
 
   const hashedPassword = await bcrypt.hash("racheliscool", 10);
+  await prisma.theme.create({
+    data: {
+      name: "default",
+      primary: "hsl(220, 16%, 21%)",
+      secondary: "hsl(218, 27%, 88%)",
+      accent: "hsl(229, 57%, 49%)",
+      accent2: "hsl(228, 100%, 78%)",
+      mood: "light",
+    },
+  });
 
   const user = await prisma.user.create({
     data: {
