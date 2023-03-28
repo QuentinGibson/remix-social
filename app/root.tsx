@@ -12,6 +12,7 @@ import {
 } from "@remix-run/react";
 
 import tailwindStylesheetUrl from "./styles/tailwind.css";
+import globalStyleSheet from "./styles/global.css";
 import popperCss from "./styles/popper.css";
 import { getUser } from "./session.server";
 import { useOptionalUser } from "./utils";
@@ -19,6 +20,7 @@ import { useOptionalUser } from "./utils";
 export const links: LinksFunction = () => {
   return [
     { rel: "stylesheet", href: tailwindStylesheetUrl },
+    { rel: "stylesheet", href: globalStyleSheet },
     { rel: "stylesheet", href: popperCss },
   ];
 };
