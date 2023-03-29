@@ -68,7 +68,7 @@ describe("smoke tests", () => {
   // it("should allow you to create a new post", () => {
 
   // })
-  it("should allow you to change user settings", () => {
+  it("should allow you to change user settings", async () => {
     cy.login();
     cy.visit("/settings");
 
@@ -82,7 +82,7 @@ describe("smoke tests", () => {
     cy.get("#save-profile").click(); // clicks the save button
     cy.wait(1000);
     // asserts that the user settings have been updated
-    cy.get("#theme").should("have.value", "dark");
+    cy.get("#theme").should("have.text", "dark");
     // cy.get("#language-select").should("have.value", "French");
     // cy.get("#layout-input").should("have.value", "grid");
     cy.get("#notifications").should("be.checked");
