@@ -42,10 +42,11 @@ export default function Index() {
   const { posts, page, count } = useLoaderData<typeof loader>();
   let optimisticPosts = [...posts];
   const maxPage = Math.ceil(Number(count) / 10);
-  const paginateButton = `bg-slate-600 py-1 px-2 mx-8 rounded-full text-white`;
   const sessionUser = useOptionalUser();
   const themeContext = useThemeContext();
+  const darkTheme = themeContext.mood === "dark";
 
+  const paginateButton = `py-1 px-2 mx-8 rounded-full text-white`;
   function didUserLike(post: { likes: any[] }) {
     const userIds = post.likes.map((like: any) => like.userId);
     return userIds.includes(sessionUser?.id);
@@ -70,19 +71,23 @@ export default function Index() {
         return <Item key={post.id} post={post} like={like} />;
       })}
       <div className="w-full flex flex-col items-center">
-        <div className="flex items-center justify-center w-1/3">
+        <div className="flex items-center justify-center max-w-screen-md">
           {!isFirstPage && (
             <Link
               className={paginateButton}
+              style={{ background: themeContext.accent }}
               to={{ pathname: "/", search: previousQuery.toString() }}
             >
               Prev
             </Link>
           )}
-          <p>Page: {page}</p>
+          <p className={`${darkTheme ? "text-white" : "text-black"}`}>
+            Page: {page}
+          </p>
           {!isLastPage && (
             <Link
               className={paginateButton}
+              style={{ background: themeContext.accent }}
               to={{ pathname: "/", search: nextQuery.toString() }}
             >
               Next
@@ -90,7 +95,11 @@ export default function Index() {
           )}
         </div>
         <div className="flex items-center w-1/3 justify-center">
-          <p className="my-4 text-slate-900 text-lg">
+          <p
+            className={`${
+              darkTheme ? "text-white" : "text-black"
+            } my-4 text-slate-900 text-lg`}
+          >
             Showing Page {page} of {maxPage}
           </p>
         </div>

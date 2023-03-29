@@ -16,8 +16,8 @@ export const action: ActionFunction = async (RemixContext) => {
         post: { connect: { id: postId } },
       },
     });
-    return json({ type: "success", intent: "like" });
+    return json({ ok: true, intent: "like" });
   } catch (e: any) {
-    return json({ type: "failure", intent: "like" });
+    return json({ ok: false, intent: "like" });
   }
 };

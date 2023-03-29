@@ -29,6 +29,7 @@ export default function UserRoute() {
   const { user } = useLoaderData<typeof loader>();
   const [value, setValue] = React.useState(0);
   const themeContext = useThemeContext();
+  const darkMood = themeContext.mood === "dark";
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -73,7 +74,7 @@ export default function UserRoute() {
   };
 
   return (
-    <main>
+    <main className={`${darkMood ? "bg-black" : "bg-white"} pt-36 pb-8`}>
       <div className="max-w-screen-md mx-auto pt-10 p-4" id="container">
         <div className="flex mb-8 items-center">
           <div className="w-16 mr-10">
@@ -85,7 +86,12 @@ export default function UserRoute() {
             />
           </div>
           <div>
-            <h1 id="user-name" className="font-bold text-lg">
+            <h1
+              id="user-name"
+              className={`${
+                darkMood ? "text-white" : "text-black"
+              } font-bold text-lg`}
+            >
               {user.name}
             </h1>
             <div className="flex">
@@ -96,7 +102,9 @@ export default function UserRoute() {
                 >
                   Posts
                 </p>
-                <p>{user.posts.length}</p>
+                <p className={`${darkMood ? "text-white" : "text-black"}`}>
+                  {user.posts.length}
+                </p>
               </div>
               <div>
                 <p
@@ -105,25 +113,28 @@ export default function UserRoute() {
                 >
                   Comments
                 </p>
-                <p>{user.comments.length}</p>
+                <p className={`${darkMood ? "text-white" : "text-black"}`}>
+                  {user.comments.length}
+                </p>
               </div>
             </div>
           </div>
         </div>
 
-        <div>
+        <div className="bg-white">
           <Box sx={{ width: "100%" }}>
-            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+            <Box
+              sx={{
+                borderBottom: 1,
+                borderColor: "divider",
+              }}
+            >
               <Tabs
                 value={value}
                 onChange={handleChange}
-                aria-label="basic tabs example"
+                aria-label="A history of posts and comments from this user"
               >
-                <Tab
-                  label="Posts"
-                  sx={{ color: themeContext.accent }}
-                  {...a11yProps(0)}
-                />
+                <Tab label="Posts" {...a11yProps(0)} />
                 <Tab label="Comments" {...a11yProps(1)} />
               </Tabs>
             </Box>

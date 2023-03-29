@@ -20,12 +20,9 @@ const Item = ({
     null
   );
   const themeContext = useThemeContext();
-  const mood = themeContext.mood === "dark";
   const [arrowElement, setArrowElement] = useState<HTMLDivElement | null>(null);
   const [showPopper, setShowPopper] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-  const likeFetcher = useFetcher();
-  const sessionUser = useOptionalUser();
   const blockFetcher = useFetcher();
   const darkMood = themeContext.mood === "dark";
   const [queryParams] = useSearchParams();
@@ -76,9 +73,8 @@ const Item = ({
       className="mx-auto relative max-w-xl sm:pb-16 sm:pt-8"
     >
       <div
-        className={`article-container px-4 py-4 ${
-          darkMood ? "bg-slate-800" : "bg-white"
-        }  rounded-t`}
+        className={`article-container px-4 py-4`}
+        style={{ background: themeContext.accent2 }}
       >
         <div className=" rounded-t flex justify-between items-center">
           <div className="flex items-center">

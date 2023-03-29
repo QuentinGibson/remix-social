@@ -1,10 +1,13 @@
 import { useFetcher } from "@remix-run/react";
 import { useRef, useState } from "react";
 import { BiSend } from "react-icons/bi";
+import { useThemeContext } from "~/root";
 
 export default function NewComment({ postId }: { postId: string }) {
   const [count, setCount] = useState(0);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const themeContext = useThemeContext();
+  const darkMood = themeContext.mood === "dark";
   const maxCount = 280;
 
   const handleChange = () => {
@@ -24,11 +27,11 @@ export default function NewComment({ postId }: { postId: string }) {
           placeholder="Enter your new comment here!"
           id="newcomment"
         />
-        <p className="absolute top-0 right-6 pt-3">
+        <p className={`absolute top-0 right-6 pt-3 text-black`}>
           {count} / {maxCount}
         </p>
         <button
-          className="absolute bottom-0 right-0 rounded-lg w-10 h-10"
+          className="absolute bottom-0 right-0 rounded-lg text-black w-10 h-10"
           type="submit"
         >
           <BiSend />

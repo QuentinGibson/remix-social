@@ -7,7 +7,7 @@ const LikeButton = ({ like, count, postId }: any) => {
   const user = useOptionalUser();
   const likeFetcher = useFetcher();
   const themeContext = useThemeContext();
-  const darkMood = themeContext.mood;
+  const darkMood = themeContext.mood === "dark";
   const isChangeing =
     likeFetcher.state === "submitting" || likeFetcher.state === "loading";
   let optimisticLike = like;

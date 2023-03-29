@@ -53,7 +53,9 @@ export default function SettingsPage() {
             <br />
           </label>
           <input
-            className="bg-slate-300 border-slate-900 border-2 border-solid p-1 text-lg w-96"
+            className={`${
+              darkMood ? "bg-slate-100" : "bg-slate-200"
+            } border-0  p-1 text-lg w-96`}
             type="text"
             name="username"
             id="username"
@@ -68,22 +70,26 @@ export default function SettingsPage() {
             <br />
           </label>
           <input
-            className="bg-slate-300 border-slate-900 border-2 border-solid p-1 text-lg w-96"
+            className={`${
+              darkMood ? "bg-slate-100" : "bg-slate-200"
+            }  border-0  p-1 text-lg w-96`}
             type="email"
             name="useremail"
-            id="email"
+            id="useremail"
             defaultValue={user.email}
           />
           <br />
           <label
-            className={`${darkMood ? "text-white" : "text-dark"} text-2xl`}
-            htmlFor="theme"
+            className={`text-2xl ${darkMood ? "text-white" : "text-dark"}`}
+            htmlFor="username"
           >
             Theme:
             <br />
           </label>
           <select
-            className="bg-slate-300 border-slate-900 border-2 border-solid p-1 text-lg w-96"
+            className={`${
+              darkMood ? "bg-slate-100" : "bg-slate-200"
+            }  p-1 text-lg w-96`}
             defaultValue={user.settings?.themeId}
             name="theme"
             id="theme"
@@ -100,7 +106,7 @@ export default function SettingsPage() {
           </label>
           <div className="flex justify-start">
             <input
-              className="bg-slate-300 border-slate-900 border-2 border-solid p-1 text-lg"
+              className="  p-1 text-lg"
               defaultChecked={user.settings?.notifications ?? false}
               type="checkbox"
               name="notifications"
@@ -116,7 +122,9 @@ export default function SettingsPage() {
             <br />
           </label>
           <select
-            className="bg-slate-300 border-slate-900 border-2 border-solid p-1 text-lg w-96"
+            className={`${
+              darkMood ? "bg-slate-100" : "bg-slate-200"
+            }  p-1 text-lg w-96s`}
             name="accessibility"
             id="accessibility"
             defaultValue={user.settings?.accessibility ?? "none"}
@@ -133,7 +141,9 @@ export default function SettingsPage() {
             <br />
           </label>
           <select
-            className="bg-slate-300 border-slate-900 border-2 border-solid p-1 text-lg w-96"
+            className={`${
+              darkMood ? "bg-slate-100" : "bg-slate-200"
+            }  p-1 text-lg w-96`}
             name="privacy"
             id="privacy"
             defaultValue={user.settings?.privacy ?? "none"}
@@ -146,13 +156,15 @@ export default function SettingsPage() {
             <button
               id="save-profile"
               type="submit"
-              className="bg-cyan-800 px-3 py-2 rounded-xl mr-8 text-white"
+              className="px-3 py-2 rounded-xl mr-8 text-white"
+              style={{ background: themeContext.accent }}
             >
               Save
             </button>
             <Link
               className="py-2 px-2 bg-slate-500 text-white rounded-lg hover:bg-slate-400"
               id="view-profile"
+              style={{ background: themeContext.accent2 }}
               to={`/user/${user.id}`}
             >
               View Profile
