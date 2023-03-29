@@ -3,7 +3,6 @@ import { usePopper } from "react-popper";
 import { RiMore2Fill } from "react-icons/ri";
 import { Link, useFetcher, useSearchParams } from "@remix-run/react";
 import { useRef, useState } from "react";
-import { useOptionalUser } from "~/utils";
 import LikeButton from "./posts/LikeButton";
 import { useThemeContext } from "~/root";
 

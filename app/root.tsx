@@ -20,6 +20,8 @@ import { getTheme } from "./models/theme.server";
 import invariant from "tiny-invariant";
 
 export const links: LinksFunction = () => {
+  const bootstrapCDN =
+    "https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css";
   return [
     { rel: "stylesheet", href: tailwindStylesheetUrl },
     { rel: "stylesheet", href: globalStyleSheet },

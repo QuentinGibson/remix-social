@@ -62,6 +62,7 @@ export async function createPost({
   image,
   userId,
 }: Pick<Post, "title" | "image"> & { userId: User["id"] }) {
+  throw Error("No new post for you!");
   return await prisma.post.create({
     data: {
       title,

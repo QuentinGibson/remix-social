@@ -1,11 +1,21 @@
-import { Form } from "@remix-run/react";
-import type { LoaderFunction } from "@remix-run/server-runtime";
+import { Form, useActionData } from "@remix-run/react";
+import { ErrorBoundaryComponent, json } from "@remix-run/server-runtime";
 import { ChangeEvent, useCallback, useRef, useState } from "react";
 import { requireUser } from "~/session.server";
 import { MdImage } from "react-icons/md";
 import "./newpost.css";
 import { useThemeContext } from "~/root";
-
+import { ActionFunction, LoaderFunction, UploadHandler } from "@remix-run/node";
+import {
+  unstable_parseMultipartFormData,
+  unstable_composeUploadHandlers,
+  unstable_createMemoryUploadHandler,
+} from "@remix-run/node";
+import { uploadImage } from "~/uploader-handler.server";
+import { requireUserId } from "~/session.server";
+import { createPost } from "~/models/post.server";
+import invariant from "tiny-invariant";
+import Toast from "./Toast";
 export const loader: LoaderFunction = async ({ request }) => {
   return await requireUser(request);
 };
@@ -14,6 +24,7 @@ export default function NewPostRoute() {
   const fileRef = useRef<HTMLInputElement>(null);
   const themeContext = useThemeContext();
   const darkMood = themeContext.mood === "dark";
+  const actionData = useActionData();
   const handleUpload = useCallback(() => {
     fileRef.current?.click();
   }, []);
@@ -28,11 +39,19 @@ export default function NewPostRoute() {
       reader.readAsDataURL(files[0]);
     }
   };
+  let toasts = [];
+
+  if (actionData && !actionData.ok) {
+    const message = actionData.message;
+    toasts.push(<Toast message={message} />);
+  }
   return (
-    <main className={`${darkMood ? "bg-black" : "bg-white"} pt-36 h-full`}>
+    <main
+      className={`${darkMood ? "bg-black" : "bg-white"} pt-36 h-full relative`}
+    >
+      {toasts}
       <Form
         method="post"
-        action={`/api/storage/upload`}
         className={` gap-8 flex flex-col max-w-4xl w-full mx-auto`}
         encType="multipart/form-data"
       >
@@ -92,8 +111,10 @@ export default function NewPostRoute() {
 
         <input
           type="file"
+          required
           name="upload"
           id="image"
+          accept="image/png image/jpeg"
           className="w-1 h-1 hidden"
           onChange={handleChange}
           ref={fileRef}
@@ -102,8 +123,8 @@ export default function NewPostRoute() {
           <button
             type="submit"
             className={`${
-              darkMood ? "text-white" : "text-black"
-            } px-3 py-1 rounded-lg text-white`}
+              darkMood ? "text-black" : "text-white"
+            } px-3 py-1 rounded-lg`}
             style={{ background: themeContext.accent }}
           >
             Create Post
@@ -113,3 +134,50 @@ export default function NewPostRoute() {
     </main>
   );
 }
+
+export const action: ActionFunction = async ({ request }) => {
+  console.log(request);
+  try {
+    const userId = await requireUserId(request);
+    const cloudifyUpload: UploadHandler = async ({ name, data, filename }) => {
+      if (name !== "upload") {
+        return undefined;
+      }
+      if (!filename || filename.length === 0) {
+        return undefined;
+      }
+      const uploadedImage = await uploadImage(data);
+      return uploadedImage.secure_url;
+    };
+    const cloudifyUploadHandler = unstable_composeUploadHandlers(
+      cloudifyUpload,
+      unstable_createMemoryUploadHandler()
+    );
+    const formData = await unstable_parseMultipartFormData(
+      request,
+      cloudifyUploadHandler
+    );
+    const title = formData.get("postTitle");
+    const image = formData.get("upload");
+    invariant(typeof title === "string", "title must be a value");
+    invariant(typeof image === "string", "image must be a value");
+    if (image.length === 0) {
+      throw Error("There is no image");
+    }
+    const postData = {
+      title,
+      image,
+      userId,
+    };
+    await createPost(postData);
+    return json({ ok: true, message: "Post created" }, { status: 200 });
+  } catch (error: any) {
+    return json(
+      { ok: false, message: `Post creation failed: ${error.message}` },
+      { status: 400 }
+    );
+  }
+};
+export const ErrorBoundary: ErrorBoundaryComponent = ({ error }) => {
+  return <div>ERROR: There was an issue with your request</div>;
+};
