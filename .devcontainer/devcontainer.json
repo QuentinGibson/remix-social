@@ -1,0 +1,12 @@
+{
+	"image": "mcr.microsoft.com/devcontainers/universal:2",
+	"features": {
+		"ghcr.io/devcontainers-contrib/features/jshint:2": {}
+	},
+  "postCreateCommand": "pnpm run setup",
+  "customizations": {
+    "vscode": {
+      "extensions": ["dracula-theme.theme-dracula", "oderwat.indent-rainbow"],
+    }
+  }
+}
