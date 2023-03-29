@@ -6,7 +6,7 @@
   "postCreateCommand": "pnpm run setup",
   "customizations": {
     "vscode": {
-      "extensions": ["dracula-theme.theme-dracula", "oderwat.indent-rainbow"],
+      "extensions": ["dracula-theme.theme-dracula", "oderwat.indent-rainbow", "austenc.tailwind-docs", "bradlc.vscode-tailwindcss", "heybourn.headwind"],
     }
   }
 }
