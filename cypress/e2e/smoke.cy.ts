@@ -1,5 +1,4 @@
 import { faker } from "@faker-js/faker";
-import { getUser } from "~/session.server";
 
 describe("smoke tests", () => {
   afterEach(() => {

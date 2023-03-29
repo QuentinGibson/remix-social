@@ -37,7 +37,7 @@ const LikeButton = ({ like, count, postId }: any) => {
         />
         <input type="hidden" name="postId" value={postId} />
         {user && <input type="hidden" name="userId" value={user.id} />}
-        <button className={`text-lg mr-2 heart`} type="submit">
+        <button className={`text-lg mr-2 like-button`} type="submit">
           {optimisticLike ? <RiHeartFill /> : <RiHeartLine />}
         </button>
         <p className={`font-semibold ${darkMood ? "text-white" : "text-dark"}`}>

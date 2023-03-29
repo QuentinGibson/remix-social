@@ -69,13 +69,13 @@ const Item = ({
       ref={ref}
       key={id}
       role="article"
-      className="mx-auto relative max-w-xl sm:pb-16 sm:pt-8"
+      className="relative max-w-xl mx-auto sm:pb-16 sm:pt-8"
     >
       <div
         className={`article-container px-4 py-4`}
         style={{ background: themeContext.accent2 }}
       >
-        <div className=" rounded-t flex justify-between items-center">
+        <div className="flex items-center justify-between rounded-t ">
           <div className="flex items-center">
             <img
               className="w-10 rounded-full"
@@ -108,7 +108,7 @@ const Item = ({
               onClick={togglePopper}
               style={{ color: darkMood ? "#FFFFFF" : "#000000" }}
             >
-              <RiMore2Fill className="ml-3 cursor-pointer mt-1" />
+              <RiMore2Fill className="mt-1 ml-3 cursor-pointer" />
             </button>
 
             {showPopper && (
@@ -152,7 +152,7 @@ const Item = ({
             )}
           </div>
         </div>
-        <div className=" py-3">
+        <div className="py-3 ">
           <p
             className={`text-2xl font-medium leading-loose ${
               darkMood ? "text-white" : "text-black"
@@ -175,9 +175,9 @@ const Item = ({
           src={image}
           alt="an awesome user article"
         />
-        <div className=" flex w-full items-center pt-5 justify-between box-border">
+        <div className="box-border flex items-center justify-between w-full pt-5 ">
           <div className="flex gap-7">
-            <div className="flex gap-1 items-center">
+            <div className="flex items-center gap-1">
               <LikeButton like={like} postId={id} count={likes.length} />
             </div>
             <div
@@ -209,7 +209,7 @@ const Item = ({
             </div>
           </div>
           {/* {!seen && (
-          <div className="bg-blue-800 px-2 py-1 text-white rounded">
+          <div className="px-2 py-1 text-white bg-blue-800 rounded">
             <p>New!</p>
           </div>
         )} */}
