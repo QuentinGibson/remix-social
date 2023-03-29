@@ -27,18 +27,33 @@ export async function loader({ params, request }: LoaderArgs) {
 export default function PostRoute() {
   const { post, like } = useLoaderData<typeof loader>();
   const themeContext = useThemeContext();
-  const mood = themeContext.mood === "dark";
+  const darkMood = themeContext.mood === "dark";
 
   return (
-    <main className="flex flex-col pt-4">
+    <main
+      className={`${
+        darkMood ? "text-white bg-black" : "text-black bg-white"
+      } flex flex-col pt-36 pb-8`}
+    >
       <div className="mx-auto max-w-screen-md">
-        <h3 className={`text-4xl font-bold mb-8`}>{post.title}</h3>
+        <h3
+          className={`${
+            darkMood ? "text-white" : "text-black"
+          } text-4xl font-bold mb-8`}
+        >
+          {post.title}
+        </h3>
+
         <img className="mb-6" src={post.image} alt="The post you submitted" />
         <div className="flex">
           <LikeButton like={like} count={post.likes.length} postId={post.id} />
         </div>
         <footer>
-          <h3 className="font-medium text-lg mb-2">
+          <h3
+            className={`${
+              darkMood ? "text-white" : "text-black"
+            } font-medium text-lg mb-2`}
+          >
             Comments: {post.comments.length}
           </h3>
           <NewComment postId={post.id} />
@@ -49,7 +64,13 @@ export default function PostRoute() {
                   <Comment key={comment.id} comment={comment} />
                 ))
               ) : (
-                <h3>No Comments! Add the first one</h3>
+                <h3
+                  className={`${
+                    darkMood ? "text-white" : "text-black"
+                  } no-comments`}
+                >
+                  No Comments! Add the first one
+                </h3>
               )}
             </ul>
           </div>
