@@ -1,10 +1,13 @@
 import { useFetcher, useNavigation } from "@remix-run/react";
 import { RiHeartLine, RiHeartFill } from "react-icons/ri";
+import { useThemeContext } from "~/root";
 import { useOptionalUser } from "~/utils";
 
 const LikeButton = ({ like, count, postId }: any) => {
   const user = useOptionalUser();
   const likeFetcher = useFetcher();
+  const themeContext = useThemeContext();
+  const darkMood = themeContext.mood;
   const isChangeing =
     likeFetcher.state === "submitting" || likeFetcher.state === "loading";
   let optimisticLike = like;
@@ -37,7 +40,9 @@ const LikeButton = ({ like, count, postId }: any) => {
         <button className={`text-lg mr-2 heart`} type="submit">
           {optimisticLike ? <RiHeartFill /> : <RiHeartLine />}
         </button>
-        <p className="font-semibold">{count}</p>
+        <p className={`font-semibold ${darkMood ? "text-white" : "text-dark"}`}>
+          {count}
+        </p>
       </likeFetcher.Form>
     </div>
   );

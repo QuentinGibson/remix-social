@@ -14,7 +14,6 @@ import tailwindStylesheetUrl from "./styles/tailwind.css";
 import globalStyleSheet from "./styles/global.css";
 import popperCss from "./styles/popper.css";
 import { getUser } from "./session.server";
-import { useOptionalUser } from "./utils";
 import SiteHeader from "./SiteHeader";
 import { createContext, useContext } from "react";
 import { getTheme } from "./models/theme.server";
@@ -61,17 +60,15 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body className="h-full">
-        <ThemeContext.Provider value={theme}>
+      <ThemeContext.Provider value={theme}>
+        <body className={`h-full `}>
           <SiteHeader />
-          <div className="my-24">
-            <Outlet />
-          </div>
+          <Outlet />
           <ScrollRestoration />
           <Scripts />
           <LiveReload />
-        </ThemeContext.Provider>
-      </body>
+        </body>
+      </ThemeContext.Provider>
     </html>
   );
 }

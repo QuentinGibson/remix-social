@@ -16,3 +16,6 @@
   transition: 0.05s ease-in-out;
 }
 
+main.dark {
+  background-color: hsl(0, 3%, 7%)
+}

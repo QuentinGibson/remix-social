@@ -6,6 +6,7 @@ import {
   redirect,
 } from "@remix-run/server-runtime";
 import { getUserSettings, updateUserById } from "~/models/user.server";
+import { useThemeContext } from "~/root";
 import { requireUser } from "~/session.server";
 
 export const loader = async ({ request }: LoaderArgs) => {
@@ -16,6 +17,8 @@ export const loader = async ({ request }: LoaderArgs) => {
 export default function SettingsPage() {
   const { user, themeList } = useLoaderData<typeof loader>();
   const userFetcher = useFetcher();
+  const themeContext = useThemeContext();
+  const darkMood = themeContext.mood === "dark";
 
   const themeListOptions = themeList.map((theme) => (
     <option key={theme.id} value={theme.id}>
@@ -26,13 +29,26 @@ export default function SettingsPage() {
     throw redirect("/");
   }
   return (
-    <div className="flex min-h-full flex-col justify-center">
+    <main
+      className={`flex min-h-full flex-col justify-center ${
+        darkMood ? "bg-black" : "bg-white"
+      }`}
+    >
       <div className="mx-auto w-full max-w-screen-sm px-8">
         <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-semibold">Account</h1>
+          <h1
+            className={`text-3xl font-semibold mb-4 ${
+              darkMood ? "text-white" : "text-black"
+            }`}
+          >
+            Account
+          </h1>
         </div>
         <userFetcher.Form method="post">
-          <label className="text-2xl" htmlFor="username">
+          <label
+            className={`text-2xl ${darkMood ? "text-white" : "text-dark"}`}
+            htmlFor="username"
+          >
             Username:
             <br />
           </label>
@@ -44,7 +60,10 @@ export default function SettingsPage() {
             defaultValue={user.name}
           />
           <br />
-          <label className="text-2xl" htmlFor="email">
+          <label
+            className={`${darkMood ? "text-white" : "text-dark"} text-2xl`}
+            htmlFor="email"
+          >
             Email:
             <br />
           </label>
@@ -56,7 +75,10 @@ export default function SettingsPage() {
             defaultValue={user.email}
           />
           <br />
-          <label className="text-2xl" htmlFor="theme">
+          <label
+            className={`${darkMood ? "text-white" : "text-dark"} text-2xl`}
+            htmlFor="theme"
+          >
             Theme:
             <br />
           </label>
@@ -69,7 +91,10 @@ export default function SettingsPage() {
             {themeListOptions}
           </select>
           <br />
-          <label className="text-2xl" htmlFor="notification">
+          <label
+            className={`${darkMood ? "text-white" : "text-dark"} text-2xl`}
+            htmlFor="notification"
+          >
             Notification:
             <br />
           </label>
@@ -83,7 +108,10 @@ export default function SettingsPage() {
             />
           </div>
           <br />
-          <label className="text-2xl" htmlFor="accessibility">
+          <label
+            className={`${darkMood ? "text-white" : "text-dark"} text-2xl`}
+            htmlFor="accessibility"
+          >
             Accessibility:
             <br />
           </label>
@@ -97,7 +125,10 @@ export default function SettingsPage() {
             <option value="high-contrast">High Contrast</option>
           </select>
           <br />
-          <label className="text-2xl" htmlFor="privacy">
+          <label
+            className={`${darkMood ? "text-white" : "text-dark"} text-2xl`}
+            htmlFor="privacy"
+          >
             Privacy:
             <br />
           </label>
@@ -111,11 +142,11 @@ export default function SettingsPage() {
             <option value="none">None</option>
           </select>
           <br />
-          <div className="flex justify-between mt-4">
+          <div className="flex mt-4">
             <button
               id="save-profile"
               type="submit"
-              className="bg-cyan-800 px-3 py-2 rounded-xl text-white"
+              className="bg-cyan-800 px-3 py-2 rounded-xl mr-8 text-white"
             >
               Save
             </button>
@@ -129,7 +160,7 @@ export default function SettingsPage() {
           </div>
         </userFetcher.Form>
       </div>
-    </div>
+    </main>
   );
 }
 

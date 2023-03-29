@@ -8,6 +8,7 @@ import {
 } from "@remix-run/react";
 
 import { getPosts, getUserFeed } from "~/models/post.server";
+import { useThemeContext } from "~/root";
 import Item from "~/routes/Item";
 import { getUser } from "~/session.server";
 import { useOptionalUser } from "~/utils";
@@ -43,6 +44,7 @@ export default function Index() {
   const maxPage = Math.ceil(Number(count) / 10);
   const paginateButton = `bg-slate-600 py-1 px-2 mx-8 rounded-full text-white`;
   const sessionUser = useOptionalUser();
+  const themeContext = useThemeContext();
 
   function didUserLike(post: { likes: any[] }) {
     const userIds = post.likes.map((like: any) => like.userId);
@@ -62,7 +64,7 @@ export default function Index() {
   // An effect for appending data to items state
 
   return (
-    <main className="relative min-h-screen bg-white">
+    <main className={`relative min-h-screen pt-36 ${themeContext.mood}`}>
       {optimisticPosts.map((post) => {
         const like = didUserLike(post);
         return <Item key={post.id} post={post} like={like} />;
