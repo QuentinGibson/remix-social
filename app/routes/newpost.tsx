@@ -138,7 +138,6 @@ export default function NewPostRoute() {
 }
 
 export const action: ActionFunction = async ({ request }) => {
-  console.log(request);
   try {
     const userId = await requireUserId(request);
     const cloudifyUpload: UploadHandler = async ({ name, data, filename }) => {
