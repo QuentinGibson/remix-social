@@ -1,4 +1,9 @@
-import type { ActionArgs, LoaderArgs, V2_MetaFunction } from "@remix-run/node";
+import type {
+  ActionArgs,
+  ErrorBoundaryComponent,
+  LoaderArgs,
+  V2_MetaFunction,
+} from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, Link, useActionData, useSearchParams } from "@remix-run/react";
 import * as React from "react";
@@ -6,6 +11,7 @@ import * as React from "react";
 import { createUserSession, getUserId } from "~/session.server";
 import { verifyLogin } from "~/models/user.server";
 import { safeRedirect, validateEmail } from "~/utils";
+import { useThemeContext } from "~/root";
 
 export async function loader({ request }: LoaderArgs) {
   const userId = await getUserId(request);
@@ -66,6 +72,8 @@ export default function LoginPage() {
   const actionData = useActionData<typeof action>();
   const emailRef = React.useRef<HTMLInputElement>(null);
   const passwordRef = React.useRef<HTMLInputElement>(null);
+  const themeContext = useThemeContext();
+  const darkMood = themeContext.mood === "dark";
 
   React.useEffect(() => {
     if (actionData?.errors?.email) {
@@ -136,7 +144,10 @@ export default function LoginPage() {
           <input type="hidden" name="redirectTo" value={redirectTo} />
           <button
             type="submit"
-            className="w-full rounded bg-blue-500  py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400"
+            className={`w-full rounded ${
+              darkMood ? "text-white" : "text-black"
+            }  py-2 px-4 `}
+            style={{ background: themeContext.primary }}
           >
             Log in
           </button>
@@ -173,3 +184,22 @@ export default function LoginPage() {
     </div>
   );
 }
+
+export const ErrorBoundary: ErrorBoundaryComponent = ({ error }) => {
+  return (
+    <div className="pt-36">
+      <div className="flex justify-center items-center flex-col">
+        <div className="flex flex-col justify-center items-center mb-12 font-bold">
+          <h1 className="text-3xl mb-4">We're Sorry!</h1>
+          <p className="text-xl">
+            It seem like getting your request failed with the error below!
+          </p>
+        </div>
+        <div className="flex flex-col justify-center items-center bg-red-800 px-8 py-4 h-24 rounded text-white">
+          Error Message:
+          <span className="text-base mt-2">{error.message}</span>
+        </div>
+      </div>
+    </div>
+  );
+};

@@ -1,4 +1,4 @@
-import { json, LoaderArgs } from "@remix-run/node";
+import { ErrorBoundaryComponent, json, LoaderArgs } from "@remix-run/node";
 import { Link, useCatch, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { getUserProfileById } from "~/models/user.server";
@@ -153,21 +153,6 @@ export default function UserRoute() {
   );
 }
 
-export function ErrorBoundary({ error }: { error: Error }) {
-  console.error(error);
-
-  return <div>An unexpected error occurred: {error.message}</div>;
-}
-
-export function CatchBoundary() {
-  const caught = useCatch();
-
-  if (caught.status === 404) {
-    return <div>User not found</div>;
-  }
-
-  throw new Error(`Unexpected caught response with status: ${caught.status}`);
-}
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
 
@@ -194,3 +179,22 @@ function a11yProps(index: number) {
     "aria-controls": `simple-tabpanel-${index}`,
   };
 }
+
+export const ErrorBoundary: ErrorBoundaryComponent = ({ error }) => {
+  return (
+    <div className="pt-36">
+      <div className="flex justify-center items-center flex-col">
+        <div className="flex flex-col justify-center items-center mb-12 font-bold">
+          <h1 className="text-3xl mb-4">We're Sorry!</h1>
+          <p className="text-xl">
+            It seem like getting your request failed with the error below!
+          </p>
+        </div>
+        <div className="flex flex-col justify-center items-center bg-red-800 px-8 py-4 h-24 rounded text-white">
+          Error Message:
+          <span className="text-base mt-2">{error.message}</span>
+        </div>
+      </div>
+    </div>
+  );
+};
