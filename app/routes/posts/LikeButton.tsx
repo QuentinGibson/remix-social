@@ -1,28 +1,44 @@
-import { useFetcher, useNavigation } from "@remix-run/react";
+import { useActionData, useFetcher, useNavigation } from "@remix-run/react";
 import { RiHeartLine, RiHeartFill } from "react-icons/ri";
-import { useThemeContext } from "~/root";
+import { useThemeContext, useToast } from "~/root";
 import { useOptionalUser } from "~/utils";
+import { action as likeAction } from "~/routes/api/forms/newlike";
+import { useEffect } from "react";
 
 const LikeButton = ({ like, count, postId }: any) => {
   const user = useOptionalUser();
-  const likeFetcher = useFetcher();
+  const likeFetcher = useFetcher<typeof likeAction>();
   const themeContext = useThemeContext();
+  const { showToast } = useToast();
   const darkMood = themeContext.mood === "dark";
   const isChangeing =
     likeFetcher.state === "submitting" || likeFetcher.state === "loading";
+  const isLoading = likeFetcher.state === "loading";
   let optimisticLike = like;
 
-  if (isChangeing) {
-    const intent = likeFetcher.formData?.get("intent");
-    if (intent === "unlike") {
-      optimisticLike = false;
-      count--;
+  useEffect(() => {
+    if (isChangeing) {
+      const intent = likeFetcher.formData?.get("intent");
+      if (intent === "unlike") {
+        optimisticLike = false;
+        count--;
+      }
+      if (intent === "like") {
+        optimisticLike = true;
+        count++;
+      }
     }
-    if (intent === "like") {
-      optimisticLike = true;
-      count++;
+    if (isLoading) {
+      if (likeFetcher.data) {
+        if (likeFetcher.data.ok) {
+          showToast(likeFetcher.data.message, false);
+        } else {
+          showToast(likeFetcher.data.message, true);
+        }
+      }
     }
-  }
+  }, [isChangeing, likeFetcher]);
+
   return (
     <div className="flex">
       <likeFetcher.Form

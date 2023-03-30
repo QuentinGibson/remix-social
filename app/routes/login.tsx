@@ -11,7 +11,7 @@ import * as React from "react";
 import { createUserSession, getUserId } from "~/session.server";
 import { verifyLogin } from "~/models/user.server";
 import { safeRedirect, validateEmail } from "~/utils";
-import { useThemeContext } from "~/root";
+import { useThemeContext, useToast } from "~/root";
 
 export async function loader({ request }: LoaderArgs) {
   const userId = await getUserId(request);
@@ -73,12 +73,15 @@ export default function LoginPage() {
   const emailRef = React.useRef<HTMLInputElement>(null);
   const passwordRef = React.useRef<HTMLInputElement>(null);
   const themeContext = useThemeContext();
+  const { showToast } = useToast();
   const darkMood = themeContext.mood === "dark";
 
   React.useEffect(() => {
     if (actionData?.errors?.email) {
+      showToast("please enter your email", true);
       emailRef.current?.focus();
     } else if (actionData?.errors?.password) {
+      showToast("please enter your password", true);
       passwordRef.current?.focus();
     }
   }, [actionData]);

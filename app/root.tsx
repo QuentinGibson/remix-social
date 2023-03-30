@@ -18,11 +18,15 @@ import SiteHeader from "./SiteHeader";
 import { createContext, useContext } from "react";
 import { getTheme } from "./models/theme.server";
 import invariant from "tiny-invariant";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const links: LinksFunction = () => {
-  const bootstrapCDN =
-    "https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css";
+  const reactToastify =
+    "https://cdn.jsdelivr.net/npm/react-toastify/dist/ReactToastify.min.css";
+
   return [
+    { rel: "stylesheet", href: reactToastify, type: "text/css" },
     { rel: "stylesheet", href: tailwindStylesheetUrl },
     { rel: "stylesheet", href: globalStyleSheet },
     { rel: "stylesheet", href: popperCss },
@@ -33,6 +37,7 @@ export async function loader({ request }: LoaderArgs) {
   const user = await getUser(request);
   const theme = await getTheme(user?.id || "none");
   invariant(theme, "theme not found");
+
   return json({
     user,
     theme,
@@ -52,6 +57,34 @@ export function useThemeContext() {
   return useContext(ThemeContext);
 }
 
+type ToastContextType = {
+  showToast: (message: string, error: boolean) => void;
+};
+
+const ToastContext = createContext<ToastContextType>({
+  showToast: () => {},
+});
+
+function ToastProvider(props: { children: React.ReactNode }) {
+  const showToast = (message: string, error: boolean) => {
+    if (error) {
+      toast.error(message);
+    } else {
+      toast.success(message);
+    }
+  };
+  return (
+    <ToastContext.Provider value={{ showToast }}>
+      {props.children}
+      <ToastContainer autoClose={5000} position="bottom-right" />
+    </ToastContext.Provider>
+  );
+}
+
+export function useToast() {
+  return useContext(ToastContext);
+}
+
 export default function App() {
   const { theme } = useLoaderData();
   return (
@@ -63,12 +96,16 @@ export default function App() {
         <Links />
       </head>
       <ThemeContext.Provider value={theme}>
-        <body className={`h-full `}>
-          <SiteHeader />
-          <Outlet />
-          <ScrollRestoration />
-          <Scripts />
-          <LiveReload />
+        <body className={`h-full`}>
+          <ToastProvider>
+            <>
+              <SiteHeader />
+              <Outlet />
+              <ScrollRestoration />
+              <Scripts />
+              <LiveReload />
+            </>
+          </ToastProvider>
         </body>
       </ThemeContext.Provider>
     </html>

@@ -15,7 +15,6 @@ import { uploadImage } from "~/uploader-handler.server";
 import { requireUserId } from "~/session.server";
 import { createPost } from "~/models/post.server";
 import invariant from "tiny-invariant";
-import Toast from "./Toast";
 export const loader: LoaderFunction = async ({ request }) => {
   return await requireUser(request);
 };
@@ -39,17 +38,14 @@ export default function NewPostRoute() {
       reader.readAsDataURL(files[0]);
     }
   };
-  let toasts = [];
 
   if (actionData && !actionData.ok) {
     const message = actionData.message;
-    toasts.push(<Toast message={message} />);
   }
   return (
     <main
       className={`${darkMood ? "bg-black" : "bg-white"} pt-36 h-full relative`}
     >
-      {toasts}
       <Form
         method="post"
         className={` gap-8 flex flex-col max-w-4xl w-full mx-auto`}

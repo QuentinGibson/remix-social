@@ -4,10 +4,15 @@ import type {
   ErrorBoundaryComponent,
 } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { Link, useLoaderData, useSearchParams } from "@remix-run/react";
+import {
+  Link,
+  useActionData,
+  useLoaderData,
+  useSearchParams,
+} from "@remix-run/react";
 
 import { getPosts, getUserFeed } from "~/models/post.server";
-import { useThemeContext } from "~/root";
+import { useThemeContext, useToast } from "~/root";
 import Item from "~/routes/Item";
 import { getUser } from "~/session.server";
 import { useOptionalUser } from "~/utils";
@@ -43,7 +48,16 @@ export default function Index() {
   const maxPage = Math.ceil(Number(count) / 10);
   const sessionUser = useOptionalUser();
   const themeContext = useThemeContext();
+  const { showToast } = useToast();
   const darkTheme = themeContext.mood === "dark";
+  const actionData = useActionData();
+  if (actionData) {
+    if (actionData.message && typeof actionData.ok === "boolean") {
+      showToast(actionData.message, actionData.ok);
+    } else {
+      console.log("Weird response!: " + JSON.stringify(actionData));
+    }
+  }
 
   const paginateButton = `py-1 px-2 mx-8 rounded-full text-white`;
   function didUserLike(post: { likes: any[] }) {

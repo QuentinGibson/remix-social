@@ -1,11 +1,21 @@
-import { ErrorBoundaryComponent, LoaderArgs } from "@remix-run/node";
+import {
+  DataFunctionArgs,
+  ErrorBoundaryComponent,
+  LoaderArgs,
+} from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { useCatch, useFetchers, useLoaderData } from "@remix-run/react";
-import { useState } from "react";
+import {
+  useActionData,
+  useCatch,
+  useFetchers,
+  useLoaderData,
+} from "@remix-run/react";
+import { useEffect } from "react";
 import invariant from "tiny-invariant";
+import { createComment } from "~/models/comment.server";
 import { getPost } from "~/models/post.server";
-import { useThemeContext } from "~/root";
-import { getUser } from "~/session.server";
+import { useThemeContext, useToast } from "~/root";
+import { getUser, requireUser } from "~/session.server";
 import { canBeOptimistic, useOptionalUser } from "~/utils";
 import Comment from "./Comment";
 import LikeButton from "./LikeButton";
@@ -28,7 +38,8 @@ export default function PostRoute() {
   const { post, like } = useLoaderData<typeof loader>();
   const themeContext = useThemeContext();
   const darkMood = themeContext.mood === "dark";
-
+  const { showToast } = useToast();
+  const actionData = useActionData();
   return (
     <main
       className={`${
@@ -79,6 +90,21 @@ export default function PostRoute() {
     </main>
   );
 }
+
+export const action = async ({ request }: DataFunctionArgs) => {
+  try {
+    const formData = await request.formData();
+    const commentBody = formData.get("comment") as string;
+    const postId = formData.get("postId") as string;
+    const user = await requireUser(request);
+    invariant(commentBody, "Please enter body for your comment");
+    invariant(postId, "Please enter a post id");
+    const data = await createComment(user.id, postId, commentBody);
+    return json({ ok: true, message: data, intent: "newcomment" });
+  } catch (error: any) {
+    return json({ ok: false, message: error.message, intent: "newcomment" });
+  }
+};
 
 export const ErrorBoundary: ErrorBoundaryComponent = ({ error }) => {
   return (

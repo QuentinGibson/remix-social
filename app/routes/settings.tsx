@@ -1,4 +1,10 @@
-import { Link, useCatch, useFetcher, useLoaderData } from "@remix-run/react";
+import {
+  Link,
+  useActionData,
+  useCatch,
+  useFetcher,
+  useLoaderData,
+} from "@remix-run/react";
 import {
   DataFunctionArgs,
   ErrorBoundaryComponent,
@@ -6,8 +12,9 @@ import {
   LoaderArgs,
   redirect,
 } from "@remix-run/server-runtime";
+import { useEffect } from "react";
 import { getUserSettings, updateUserById } from "~/models/user.server";
-import { useThemeContext } from "~/root";
+import { useThemeContext, useToast } from "~/root";
 import { requireUser } from "~/session.server";
 
 export const loader = async ({ request }: LoaderArgs) => {
@@ -17,9 +24,17 @@ export const loader = async ({ request }: LoaderArgs) => {
 };
 export default function SettingsPage() {
   const { user, themeList } = useLoaderData<typeof loader>();
-  const userFetcher = useFetcher();
+  const userFetcher = useFetcher<typeof action>();
   const themeContext = useThemeContext();
+  const { showToast } = useToast();
   const darkMood = themeContext.mood === "dark";
+  useEffect(() => {
+    if (userFetcher.state === "loading") {
+      if (userFetcher.data) {
+        showToast(userFetcher.data.message, !userFetcher.data.ok);
+      }
+    }
+  }, [userFetcher, showToast]);
 
   const themeListOptions = themeList.map((theme) => (
     <option key={theme.id} value={theme.id}>
@@ -182,12 +197,12 @@ export const action = async ({ request }: DataFunctionArgs) => {
   const user = await requireUser(request);
   try {
     await updateUserById(user.id, formData);
-    return { ok: true, message: "user updated" };
+    return json({ ok: true, message: "user updated" });
   } catch (error) {
-    return {
+    return json({
       ok: false,
       message: "update failed",
-    };
+    });
   }
 };
 

@@ -1,7 +1,11 @@
-import { ActionFunction, json } from "@remix-run/node";
+import { ActionFunction, json, LoaderArgs, redirect } from "@remix-run/node";
 import invariant from "tiny-invariant";
 import { prisma } from "~/db.server";
 import { requireUserId } from "~/session.server";
+
+export const loader = async ({ request }: LoaderArgs) => {
+  redirect("/");
+};
 
 export const action: ActionFunction = async ({ request }) => {
   const redirectURL = request.headers.get("Referer");
@@ -13,8 +17,8 @@ export const action: ActionFunction = async ({ request }) => {
   if (requestId !== userId) {
     throw Error("User rejected!");
   }
-  invariant(userId === "string", "userId must be a string");
-  invariant(postId === "string", "postId must be a string");
+  invariant(typeof userId === "string", "userId must be a string");
+  invariant(typeof postId === "string", "postId must be a string");
 
   invariant(redirectURL, "Must have a original url");
   try {
@@ -24,8 +28,9 @@ export const action: ActionFunction = async ({ request }) => {
         post: { connect: { id: postId } },
       },
     });
-    return json({ ok: true, intent: "like" });
+
+    return json({ ok: true, intent: "like", message: "like sucessful" });
   } catch (e: any) {
-    return json({ ok: false, intent: "like", error: e.message });
+    return json({ ok: false, intent: "like", message: e.message });
   }
 };

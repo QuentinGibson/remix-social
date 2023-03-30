@@ -1,7 +1,11 @@
-import type { ActionFunction } from "@remix-run/node";
+import { ActionFunction, LoaderArgs, redirect } from "@remix-run/node";
 import invariant from "tiny-invariant";
 import { prisma } from "~/db.server";
 import { requireUser } from "~/session.server";
+
+export const loader = async ({ request }: LoaderArgs) => {
+  redirect("/");
+};
 
 export const action: ActionFunction = async ({ request }) => {
   try {

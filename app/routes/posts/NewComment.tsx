@@ -1,13 +1,10 @@
 import { useFetcher } from "@remix-run/react";
 import { useRef, useState } from "react";
 import { BiSend } from "react-icons/bi";
-import { useThemeContext } from "~/root";
 
 export default function NewComment({ postId }: { postId: string }) {
   const [count, setCount] = useState(0);
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  const themeContext = useThemeContext();
-  const darkMood = themeContext.mood === "dark";
   const maxCount = 280;
 
   const handleChange = () => {
@@ -16,7 +13,7 @@ export default function NewComment({ postId }: { postId: string }) {
   const commentFetcher = useFetcher();
 
   return (
-    <commentFetcher.Form method="post" action="/api/forms/newcomment">
+    <commentFetcher.Form method="post">
       <input type="hidden" name="postId" value={postId} />
       <div className="relative bg-slate-200 ">
         <textarea
