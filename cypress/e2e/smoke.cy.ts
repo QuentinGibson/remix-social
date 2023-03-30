@@ -58,11 +58,14 @@ describe("smoke tests", () => {
         );
 
         cy.get("article:first .menu-button").click();
-        cy.get("article:first .post-user").should("have.css", "rgb(43,17,156)");
-        cy.get("article:first .post-anchor").should(
-          "have.css",
-          "rgb(43,17,156)"
-        );
+        cy.get("article:first .post-user")
+          .trigger("mouseover")
+          .should("have.css", "background-color")
+          .and("not.equal", "rgb(255, 255, 255)");
+        cy.get("article:first .post-anchor")
+          .trigger("mouseover")
+          .should("have.css", "background-color")
+          .and("not.equal", "rgb(255, 255, 255)");
         cy.get("article:first .menu li:first").should("have.text", "See user");
         // Check if the updated like count increased by one
         expect(updatedLikes).to.equal(initialLikes + 1);

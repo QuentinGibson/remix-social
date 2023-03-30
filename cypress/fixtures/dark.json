@@ -1,6 +1,6 @@
 {
   "primary": "hsl(200, 16%, 19%)",
   "secondary": "hsl(218, 18%, 32%)",
-  "accent": "hsl(251,80%,34%)",
-  "accent2": "hsl(283,90%,32%)"
+  "accent": "rgb(43, 17, 156)",
+  "accent2": "rgb(113, 8, 155)"
 }
