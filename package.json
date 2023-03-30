@@ -48,6 +48,7 @@
     "aws-sdk": "^2.1338.0",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.35.0",
+    "cypress-file-upload": "^5.0.8",
     "imagekit": "^4.1.2",
     "isbot": "^3.6.7",
     "react": "^18.2.0",

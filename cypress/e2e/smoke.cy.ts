@@ -1,10 +1,21 @@
 import { faker } from "@faker-js/faker";
-
 describe("smoke tests", () => {
   afterEach(() => {
     cy.cleanupUser();
   });
 
+  it("shows the user details", () => {
+    cy.login();
+    cy.visitAndCheck("/");
+
+    cy.visit("/settings");
+    cy.wait(1000);
+    cy.get("#view-profile").click();
+    cy.wait(1000);
+    // Replace the selectors with the actual selectors for the elements that detail the user
+    cy.get("#user-name").should("include.text", ""); // checks that the user's name is displayed
+    cy.get("#user-avatar").should("have.attr", "src"); // checks that the user's avatar is displayed with the correct URL
+  });
   it("should allow you to register and login", () => {
     const loginForm = {
       email: `${faker.internet.userName()}@example.com`,
@@ -45,8 +56,14 @@ describe("smoke tests", () => {
         const updatedLikes: number = parseInt(
           $article.find(".total-likes").html() as string
         );
-        cy.get("article:first .like-button").click();
 
+        cy.get("article:first .menu-button").click();
+        cy.get("article:first .post-user").should("have.css", "rgb(43,17,156)");
+        cy.get("article:first .post-anchor").should(
+          "have.css",
+          "rgb(43,17,156)"
+        );
+        cy.get("article:first .menu li:first").should("have.text", "See user");
         // Check if the updated like count increased by one
         expect(updatedLikes).to.equal(initialLikes + 1);
       });
@@ -65,40 +82,23 @@ describe("smoke tests", () => {
     ).click();
     cy.get("ul#comments li:first-child").should("contain.text", comment);
   });
-  // it("should allow you to create a new post", () => {
-
-  // })
-  it("should allow you to change user settings", async () => {
+  it("should allow you to change user settings", () => {
     cy.login();
     cy.visit("/settings");
 
     cy.wait(1000);
-    cy.get("#theme").select("dark"); // types "dark" into the theme input field
-    // cy.get("#language-select").select("French"); // selects "French" from the language dropdown
-    // cy.get("#layout-input").clear().type("grid"); // types "grid" into the layout input field
+    cy.get("#theme").select("dark");
     cy.get("#notifications").check(); // checks the notifications checkbox
     cy.get("#privacy").select("private"); // selects "private" from the privacy dropdown
     cy.get("#accessibility").select("high-contrast"); // selects "high-contrast" from the accessibility dropdown
     cy.get("#save-profile").click(); // clicks the save button
-    cy.wait(1000);
+    cy.reload();
     // asserts that the user settings have been updated
-    cy.get("#theme").should("have.text", "dark");
+    cy.get("#theme option:selected").should("have.text", "dark");
     // cy.get("#language-select").should("have.value", "French");
     // cy.get("#layout-input").should("have.value", "grid");
     cy.get("#notifications").should("be.checked");
     cy.get("#privacy").should("have.value", "private");
     cy.get("#accessibility").should("have.value", "high-contrast");
-  });
-  it("shows the user details", () => {
-    cy.login();
-    cy.visitAndCheck("/");
-
-    cy.visit("/settings");
-    cy.wait(1000);
-    cy.get("#view-profile").click();
-    cy.wait(1000);
-    // Replace the selectors with the actual selectors for the elements that detail the user
-    cy.get("#user-name").should("include.text", ""); // checks that the user's name is displayed
-    cy.get("#user-avatar").should("have.attr", "src"); // checks that the user's avatar is displayed with the correct URL
   });
 });

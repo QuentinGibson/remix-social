@@ -73,6 +73,7 @@ export default function Index() {
         <div className="flex items-center justify-center max-w-screen-md">
           {!isFirstPage && (
             <Link
+              id="previous-page"
               className={paginateButton}
               style={{ background: themeContext.accent }}
               to={{ pathname: "/", search: previousQuery.toString() }}
@@ -80,11 +81,15 @@ export default function Index() {
               Prev
             </Link>
           )}
-          <p className={`${darkTheme ? "text-white" : "text-black"}`}>
+          <p
+            id="current-page"
+            className={`${darkTheme ? "text-white" : "text-black"}`}
+          >
             Page: {page}
           </p>
           {!isLastPage && (
             <Link
+              id="next-page"
               className={paginateButton}
               style={{ background: themeContext.accent }}
               to={{ pathname: "/", search: nextQuery.toString() }}

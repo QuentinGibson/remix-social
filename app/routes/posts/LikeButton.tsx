@@ -40,7 +40,11 @@ const LikeButton = ({ like, count, postId }: any) => {
         <button className={`text-lg mr-2 like-button`} type="submit">
           {optimisticLike ? <RiHeartFill /> : <RiHeartLine />}
         </button>
-        <p className={`font-semibold ${darkMood ? "text-white" : "text-dark"}`}>
+        <p
+          className={`font-semibold ${
+            darkMood ? "text-white" : "text-dark"
+          } total-likes`}
+        >
           {count}
         </p>
       </likeFetcher.Form>

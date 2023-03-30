@@ -98,7 +98,7 @@ export default function UserRoute() {
               <div className="mr-8">
                 <p
                   style={{ color: themeContext.accent }}
-                  className="font-bold text-cyan-900"
+                  className="font-bold text-cyan-900 total-label"
                 >
                   Posts
                 </p>
@@ -109,7 +109,7 @@ export default function UserRoute() {
               <div>
                 <p
                   style={{ color: themeContext.accent }}
-                  className="font-bold text-cyan-900"
+                  className="font-bold text-cyan-900 total-label"
                 >
                   Comments
                 </p>

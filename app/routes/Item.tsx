@@ -105,6 +105,7 @@ const Item = ({
             <button
               type="button"
               ref={setReferenceElement}
+              className="menu-button"
               onClick={togglePopper}
               style={{ color: darkMood ? "#FFFFFF" : "#000000" }}
             >
@@ -114,6 +115,7 @@ const Item = ({
             {showPopper && (
               <div
                 ref={setPopperElement}
+                className="menu"
                 style={{
                   ...styles.popper,
                   backgroundColor: "#333",

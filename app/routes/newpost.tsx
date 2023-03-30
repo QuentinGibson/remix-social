@@ -94,6 +94,7 @@ export default function NewPostRoute() {
               <p className="text-lg">Select a photo to upload</p>
               <button
                 style={{ background: themeContext.accent2 }}
+                id="upload-button"
                 className="px-2 py-2 text-white rounded-lg text-base"
               >
                 Choose File
@@ -122,8 +123,9 @@ export default function NewPostRoute() {
         <div className="flex justify-start">
           <button
             type="submit"
+            id="submit-button"
             className={`${
-              darkMood ? "text-black" : "text-white"
+              darkMood ? "text-white" : "text-black"
             } px-3 py-1 rounded-lg`}
             style={{ background: themeContext.accent }}
           >

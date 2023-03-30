@@ -2,16 +2,16 @@
     font-family: 'Hind Siliguri', sans-serif;
 }
 
-.heart {
+.like-button {
   color: hsl(2, 50%, 50%);
   transform: scale(1.0);
   transition: 0.1s ease-in-out;
 }
-.heart:hover {
+.like-button:hover {
   transform: scale(1.2)
 }
 
-.heart:active {
+.like-button:active {
   transform: scale(0.9);
   transition: 0.05s ease-in-out;
 }

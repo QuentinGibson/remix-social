@@ -1,4 +1,5 @@
 import { Form, Link } from "@remix-run/react";
+import { useState } from "react";
 import { useThemeContext } from "./root";
 import { useOptionalUser } from "./utils";
 
@@ -9,7 +10,7 @@ export default function SiteHeader() {
 
   const linkClassName = `${
     mood && "text-white"
-  } mx-2 my-2 transition duration-150 ease-in-out hover:bg-blue-400 rounded px-4 py-2 text-sm`;
+  } mx-2 my-2 transition duration-150 ease-in-out rounded px-4 py-2 text-sm`;
   const linkStyle = { backgroundColor: themeContext.secondary };
   return (
     <header
