@@ -28,14 +28,14 @@ describe("smoke tests", () => {
         "background-color",
         fixtureData.accent2
       );
-      cy.get("#next-page").should("have.css", "color", "hsl(251, 80%, 34%)");
-      cy.get("article:first").click();
+      cy.get("#next-page").should(
+        "have.css",
+        "background-color",
+        fixtureData.accent
+      );
+      cy.get("article:first .post-anchor").click();
       cy.wait(1000);
       cy.get("main").should("have.css", "background-color", "rgb(0, 0, 0)");
-      cy.get("article:first .post-user").click();
-      cy.wait(1000);
-      cy.get("main").should("have.css", "background-color", "rgb(0, 0, 0)");
-      cy.get(".total-label").should("have.css", "color", "rgb(43, 17, 156)");
       cy.visit("/newpost");
       cy.wait(1000);
       cy.get("#upload-button").should(

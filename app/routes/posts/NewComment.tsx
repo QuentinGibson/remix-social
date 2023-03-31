@@ -1,16 +1,25 @@
 import { useFetcher } from "@remix-run/react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BiSend } from "react-icons/bi";
 
 export default function NewComment({ postId }: { postId: string }) {
+  const commentFetcher = useFetcher();
   const [count, setCount] = useState(0);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const maxCount = 280;
 
+  const isChanging =
+    commentFetcher.state === "loading" || commentFetcher.state === "submitting";
+
+  useEffect(() => {
+    if (isChanging && inputRef.current) {
+      inputRef.current.value = "";
+    }
+  }, [commentFetcher]);
+
   const handleChange = () => {
     setCount(inputRef.current?.value?.length ?? 0);
   };
-  const commentFetcher = useFetcher();
 
   return (
     <commentFetcher.Form method="post">
@@ -29,6 +38,7 @@ export default function NewComment({ postId }: { postId: string }) {
         </p>
         <button
           className="absolute bottom-0 right-0 rounded-lg text-black w-10 h-10"
+          id="submit-button"
           type="submit"
         >
           <BiSend />

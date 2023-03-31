@@ -77,12 +77,8 @@ describe("smoke tests", () => {
     cy.login();
     cy.visit("/");
     cy.get("article:first .post-anchor").click();
-    cy.get(
-      "form[action='/api/forms/newcomment'] textarea[name='comment']"
-    ).type(comment);
-    cy.get(
-      "form[action='/api/forms/newcomment'] button[type='submit']"
-    ).click();
+    cy.get("textarea[name='comment']").type(comment);
+    cy.get("#submit-button[type='submit']").click();
     cy.get("ul#comments li:first-child").should("contain.text", comment);
   });
   it("should allow you to change user settings", () => {
