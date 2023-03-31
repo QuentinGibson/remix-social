@@ -4,7 +4,7 @@ import invariant from "tiny-invariant";
 
 import { prisma } from "~/db.server";
 import { validateEmail } from "~/utils";
-import { createDefaultTheme } from "./theme.server";
+import { createDefaultTheme, populateTheme } from "./theme.server";
 
 export type { User } from "@prisma/client";
 
@@ -35,6 +35,7 @@ export async function createUser(
     defaultTheme = await prisma.theme.findFirstOrThrow();
   } catch (error) {
     defaultTheme = await createDefaultTheme();
+    await populateTheme();
   }
 
   return prisma.user.create({

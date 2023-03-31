@@ -1,7 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
-import { populateTheme } from "~/models/theme.server";
 
 const prisma = new PrismaClient();
 
@@ -97,7 +96,6 @@ async function seed() {
       await createComments(post.id);
     }
   }
-  await populateTheme();
 
   console.log(`Database has been seeded. 🌱`);
 }
