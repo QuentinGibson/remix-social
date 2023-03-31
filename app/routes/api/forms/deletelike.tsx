@@ -1,4 +1,5 @@
-import { ActionFunction, LoaderArgs, redirect } from "@remix-run/node";
+import type { ActionFunction, LoaderArgs } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
 import invariant from "tiny-invariant";
 import { prisma } from "~/db.server";
 import { requireUser } from "~/session.server";

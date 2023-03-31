@@ -52,7 +52,8 @@ const Item = ({
     setShowPopper(!showPopper);
   };
 
-  const handleBlock = () => {
+  const handleBlock = (e: any) => {
+    e.preventDefault();
     blockFetcher.submit(
       { postId: id },
       { method: "post", action: "/api/forms/block" }
@@ -68,7 +69,6 @@ const Item = ({
     <article
       ref={ref}
       key={id}
-      role="article"
       className="relative max-w-xl mx-auto sm:pb-16 sm:pt-8"
     >
       <div
@@ -133,7 +133,11 @@ const Item = ({
                     <Link to={{ pathname: `/posts/${id}` }}>View Page</Link>
                   </li>
                   <li>
-                    <a className="cursor-pointer" onClick={handleBlock}>
+                    <a
+                      href="#"
+                      className="cursor-pointer"
+                      onClick={handleBlock}
+                    >
                       Block Post
                     </a>
                   </li>

@@ -1,8 +1,5 @@
-import {
-  DataFunctionArgs,
-  LoaderArgs,
-  redirect,
-} from "@remix-run/server-runtime";
+import type { DataFunctionArgs, LoaderArgs } from "@remix-run/node";
+import { redirect } from "@remix-run/server-runtime";
 import { prisma } from "~/db.server";
 import { requireUser } from "~/session.server";
 
