@@ -1,10 +1,13 @@
 import { faker } from "@faker-js/faker";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import { createDefaultTheme, populateTheme } from "~/models/theme.server";
 
 const prisma = new PrismaClient();
 
 async function seed() {
+  await createDefaultTheme();
+  await populateTheme();
   const email = "rachel@remix.run";
 
   // cleanup the existing database
