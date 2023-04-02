@@ -17,11 +17,6 @@ import Item from "~/routes/Item";
 import { getUser } from "~/session.server";
 import { useOptionalUser } from "~/utils";
 
-type LoaderData = {
-  posts: Awaited<ReturnType<typeof getPosts>>;
-  count: number;
-};
-
 export const loader = async ({ request }: DataFunctionArgs) => {
   const url = new URL(request.url);
   const page = url.searchParams.get("page") || 1;
@@ -34,13 +29,6 @@ export const loader = async ({ request }: DataFunctionArgs) => {
 };
 
 export const meta: V2_MetaFunction = () => [{ title: "Group Me Social Media" }];
-
-function canBeOptimistic(fetcher: { state: string; data: any }) {
-  return (
-    fetcher.state === "submitting" ||
-    (fetcher.state === "loading" && fetcher.data?.type === "success")
-  );
-}
 
 export default function Index() {
   const { posts, page, count } = useLoaderData<typeof loader>();
