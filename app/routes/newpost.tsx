@@ -1,4 +1,4 @@
-import { Form, useActionData, useFetcher } from "@remix-run/react";
+import { useFetcher } from "@remix-run/react";
 import { ErrorBoundaryComponent, json } from "@remix-run/server-runtime";
 import { redirect } from "@remix-run/node";
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
@@ -25,7 +25,7 @@ export default function NewPostRoute() {
   const fileRef = useRef<HTMLInputElement>(null);
   const themeContext = useThemeContext();
   const darkMood = themeContext.mood === "dark";
-  const handleUpload = useCallback((e) => {
+  const handleUpload = useCallback((e: any) => {
     e.preventDefault();
     fileRef.current?.click();
   }, []);
