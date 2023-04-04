@@ -1,8 +1,5 @@
 app = "group-me-social-media"
 
-[deploy]
-release_command = "bash -c 'npx prisma migrate deploy && npx ts-node prisma/seed.ts'"
-
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []
