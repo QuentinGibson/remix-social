@@ -12,6 +12,7 @@ model User {
   email     String    @unique
   name      String    @unique
   avatar    String    @default("https://res.cloudinary.com/demo/image/upload/c_thumb,g_auto:classic,h_175,w_175/v1551428220/veducate/spencer-backman-482079-unsplash.jpg")
+  isAdmin   Boolean   @default(false)
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   password  Password?

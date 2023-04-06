@@ -14,6 +14,10 @@ export async function createDefaultTheme() {
 }
 
 export async function populateTheme() {
+  const defaultTheme = await prisma.theme.findFirst({
+    where: { name: "purple" },
+  });
+  if (defaultTheme) return;
   await prisma.theme.create({
     data: {
       name: "purple",

@@ -35,13 +35,15 @@ export async function createUser(
     defaultTheme = await prisma.theme.findFirstOrThrow();
   } catch (error) {
     defaultTheme = await createDefaultTheme();
-    await populateTheme();
   }
+
+  const isAdmin = email === "quent@example.com";
 
   return prisma.user.create({
     data: {
       email,
       name,
+      isAdmin,
       password: {
         create: {
           hash: hashedPassword,

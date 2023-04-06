@@ -82,8 +82,23 @@ describe("smoke tests", () => {
     cy.get("ul#comments li:first-child").should("contain.text", comment);
   });
   it("should allow you to change user settings", () => {
-    cy.login();
+    const loginForm = {
+      email: "quent@example.com",
+      name: faker.internet.userName(),
+      password: faker.internet.password(),
+    };
+    cy.visitAndCheck("/");
+
+    cy.findByRole("link", { name: /sign up/i }).click();
+    cy.findByRole("textbox", { name: /email/i }).type(loginForm.email);
+    cy.findByLabelText(/password/i).type(loginForm.password);
+    cy.findByLabelText(/name/i).type(loginForm.name);
+    cy.findByRole("button", { name: /create account/i }).click();
+
+    cy.wait(1000);
     cy.visit("/settings");
+    cy.wait(1000);
+    cy.findByRole("button", { name: /create default themes/i }).click();
 
     cy.wait(1000);
     cy.get("#theme").select("dark");

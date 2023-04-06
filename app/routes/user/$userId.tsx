@@ -41,7 +41,7 @@ export default function UserRoute() {
         {user.comments.map((comment) => {
           return (
             <Link
-              className="block text-base border-b-2 border-solid border-slate-100 py-5 hover:bg-slate-100"
+              className="block border-b-2 border-solid border-slate-100 py-5 text-base hover:bg-slate-100"
               key={comment.id}
               to={`/posts/${comment.postId}`}
             >
@@ -59,7 +59,7 @@ export default function UserRoute() {
         {user.posts.map((post) => {
           return (
             <Link
-              className="block text-base border-b-2 border-solid border-slate-100 py-5 hover:bg-slate-100"
+              className="block border-b-2 border-solid border-slate-100 py-5 text-base hover:bg-slate-100"
               key={post.id}
               to={`/posts/${post.id}`}
             >
@@ -74,10 +74,10 @@ export default function UserRoute() {
   };
 
   return (
-    <main className={`${darkMood ? "bg-black" : "bg-white"} pt-36 pb-8`}>
-      <div className="max-w-screen-md mx-auto pt-10 p-4" id="container">
-        <div className="flex mb-8 items-center">
-          <div className="w-16 mr-10">
+    <main className={`${darkMood ? "bg-black" : "bg-white"} pb-8 pt-36`}>
+      <div className="mx-auto max-w-screen-md p-4 pt-10" id="container">
+        <div className="mb-8 flex items-center">
+          <div className="mr-10 w-16">
             <img
               id="user-avatar"
               src={user.avatar}
@@ -90,7 +90,7 @@ export default function UserRoute() {
               id="user-name"
               className={`${
                 darkMood ? "text-white" : "text-black"
-              } font-bold text-lg`}
+              } text-lg font-bold`}
             >
               {user.name}
             </h1>
@@ -98,7 +98,7 @@ export default function UserRoute() {
               <div className="mr-8">
                 <p
                   style={{ color: themeContext.accent }}
-                  className="font-bold text-cyan-900 total-label"
+                  className="total-label font-bold text-cyan-900"
                 >
                   Posts
                 </p>
@@ -109,7 +109,7 @@ export default function UserRoute() {
               <div>
                 <p
                   style={{ color: themeContext.accent }}
-                  className="font-bold text-cyan-900 total-label"
+                  className="total-label font-bold text-cyan-900"
                 >
                   Comments
                 </p>
@@ -183,16 +183,16 @@ function a11yProps(index: number) {
 export const ErrorBoundary: ErrorBoundaryComponent = ({ error }) => {
   return (
     <div className="pt-36">
-      <div className="flex justify-center items-center flex-col">
-        <div className="flex flex-col justify-center items-center mb-12 font-bold">
-          <h1 className="text-3xl mb-4">We're Sorry!</h1>
+      <div className="flex flex-col items-center justify-center">
+        <div className="mb-12 flex flex-col items-center justify-center font-bold">
+          <h1 className="mb-4 text-3xl">We're Sorry!</h1>
           <p className="text-xl">
             It seem like getting your request failed with the error below!
           </p>
         </div>
-        <div className="flex flex-col justify-center items-center bg-red-800 px-8 py-4 h-24 rounded text-white">
+        <div className="flex h-24 flex-col items-center justify-center rounded bg-red-800 px-8 py-4 text-white">
           Error Message:
-          <span className="text-base mt-2">{error.message}</span>
+          <span className="mt-2 text-base">{error.message}</span>
         </div>
       </div>
     </div>
