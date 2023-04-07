@@ -9,6 +9,7 @@ async function seed() {
   await createDefaultTheme();
   await populateTheme();
   const email = "rachel@remix.run";
+  const username = faker.internet.userName();
 
   // cleanup the existing database
   await prisma.user.delete({ where: { email } }).catch(() => {
@@ -25,7 +26,7 @@ async function seed() {
           hash: hashedPassword,
         },
       },
-      name: "Kickback-User",
+      name: username,
     },
   });
   const createPost = (id: string) => {
