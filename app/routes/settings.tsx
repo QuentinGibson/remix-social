@@ -183,7 +183,7 @@ export default function SettingsPage() {
           </div>
         </userFetcher.Form>
         {user.isAdmin && (
-          <div className="max-screen-w-md mx-auto flex">
+          <div className="max-screen-w-md mx-auto flex gap-8">
             <Form method="post" action="/api/admin/populatePosts">
               <button className="rounded-lg bg-red-500 px-2 py-2 text-white hover:bg-red-400">
                 Create Sample Posts
