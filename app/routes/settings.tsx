@@ -185,12 +185,18 @@ export default function SettingsPage() {
         {user.isAdmin && (
           <div className="max-screen-w-md mx-auto flex gap-8">
             <Form method="post" action="/api/admin/populatePosts">
-              <button className="rounded-lg bg-red-500 px-2 py-2 text-white hover:bg-red-400">
+              <button
+                id="admin-posts"
+                className="rounded-lg bg-red-500 px-2 py-2 text-white hover:bg-red-400"
+              >
                 Create Sample Posts
               </button>
             </Form>
             <Form method="post" action="/api/admin/createThemes">
-              <button className="rounded-lg bg-red-500 px-2 py-2 text-white hover:bg-red-400">
+              <button
+                id="admin-themes"
+                className="rounded-lg bg-red-500 px-2 py-2 text-white hover:bg-red-400"
+              >
                 Create Default Themes
               </button>
             </Form>

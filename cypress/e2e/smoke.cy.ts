@@ -98,7 +98,7 @@ describe("smoke tests", () => {
     cy.wait(1000);
     cy.visit("/settings");
     cy.wait(1000);
-    cy.findByRole("button", { name: /create default themes/i }).click();
+    cy.find("#admin-themes").click();
 
     cy.wait(1000);
     cy.get("#theme").select("dark");
