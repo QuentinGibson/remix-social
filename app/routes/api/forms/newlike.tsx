@@ -1,4 +1,10 @@
-import { ActionFunction, json, LoaderArgs, redirect } from "@remix-run/node";
+import {
+  ActionFunction,
+  DataFunctionArgs,
+  json,
+  LoaderArgs,
+  redirect,
+} from "@remix-run/node";
 import invariant from "tiny-invariant";
 import { prisma } from "~/db.server";
 import { requireUserId } from "~/session.server";
@@ -7,7 +13,17 @@ export const loader = async ({ request }: LoaderArgs) => {
   redirect("/");
 };
 
-export const action: ActionFunction = async ({ request }) => {
+/**
+
+Asynchronously creates a like for a post made by the current user.
+@async
+@function action
+@param {Object} DataFunctionArgs - An object containing the request to be made.
+@param {Object} DataFunctionArgs.request - The request to be made.
+@returns {Promise<Object>} - A promise that resolves with an object containing the result of the like operation.
+@throws {Error} - Throws an error if the user is not authorized to create the like or if an error occurs during the like operation.
+*/
+export const action = async ({ request }: DataFunctionArgs) => {
   const redirectURL = request.headers.get("Referer");
   const requestId = await requireUserId(request);
   const formData = await request.formData();

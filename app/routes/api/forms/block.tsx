@@ -6,6 +6,16 @@ import { requireUser } from "~/session.server";
 export const loader = async ({ request }: LoaderArgs) => {
   redirect("/");
 };
+/**
+
+Asynchronously blocks a post for the current user.
+@async
+@function action
+@param {Object} DataFunctionArgs - An object containing the request to be made.
+@param {Object} DataFunctionArgs.request - The request to be made.
+@returns {Promise<Object>} - A promise that resolves with an object containing the result of the blocking operation.
+@throws {Error} - Throws an error if an error occurs during the blocking operation.
+*/
 export const action = async ({ request }: DataFunctionArgs) => {
   const formData = await request.formData();
   const postId = formData.get("postId") as string;

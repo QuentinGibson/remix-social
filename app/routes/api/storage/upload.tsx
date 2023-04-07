@@ -18,6 +18,16 @@ export const loader: LoaderFunction = async () => {
   return redirect("/");
 };
 
+/**
+
+Asynchronously creates a post with an uploaded image by the current user.
+@async
+@function action
+@param {Object} DataFunctionArgs - An object containing the request to be made.
+@param {Object} DataFunctionArgs.request - The request to be made.
+@returns {Promise<Object>} - A promise that resolves with a redirect to the home page after the post is successfully created.
+@throws {Error} - Throws an error if there is missing data or if an error occurs during the post creation process.
+*/
 export const action: ActionFunction = async ({ request }) => {
   const userId = await requireUserId(request);
   const cloudifyUpload: UploadHandler = async ({ name, data, filename }) => {

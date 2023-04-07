@@ -1,5 +1,12 @@
 import { prisma } from "~/db.server";
 
+/**
+ * Creates a new default theme with pre-defined colors and mood.
+ *
+ * @async
+ * @function
+ * @returns {Promise<Theme>} - A Promise that resolves to the newly created Theme object.
+ */
 export async function createDefaultTheme() {
   return await prisma.theme.create({
     data: {
@@ -13,6 +20,11 @@ export async function createDefaultTheme() {
   });
 }
 
+/**
+ * Populates the database with default theme data if the purple theme is not found.
+ * Themes added: purple, azure, jasmine, ruby, dark
+ * @returns {Promise<void>}
+ */
 export async function populateTheme() {
   const defaultTheme = await prisma.theme.findFirst({
     where: { name: "purple" },
@@ -70,6 +82,12 @@ export async function populateTheme() {
   });
 }
 
+/**
+ * Retrieves the user's theme from the database, or returns the default theme if no user is found.
+ * @param {string} userId - The ID of the user whose theme is being retrieved.
+ * @returns {Promise<Object>} The theme object containing the name, primary color, secondary color, accent color, accent2 color, and mood of the theme.
+ * @throws {Error} Throws an error if the default theme cannot be found or created.
+ */
 export async function getTheme(userId: string) {
   const user = await prisma.user.findUnique({
     where: { id: userId },
