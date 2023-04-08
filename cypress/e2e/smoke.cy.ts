@@ -98,10 +98,8 @@ describe("smoke tests", () => {
     cy.wait(1000);
     cy.visit("/settings");
     cy.wait(2000);
-    cy.contains("Create Default Themes").click();
 
     cy.wait(1000);
-    cy.get("#theme").select("dark");
     cy.get("#notifications").check(); // checks the notifications checkbox
     cy.get("#privacy").select("private"); // selects "private" from the privacy dropdown
     cy.get("#accessibility").select("high-contrast"); // selects "high-contrast" from the accessibility dropdown
