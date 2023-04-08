@@ -7,12 +7,13 @@ import { RiMore2Fill } from "react-icons/ri";
 import { Link, useFetcher, useSearchParams } from "@remix-run/react";
 import { useRef, useState } from "react";
 import LikeButton from "./posts/LikeButton";
+import { useThemeContext } from "~/root";
 
 interface Post {
   id: string
   title: string
   image: string
-  likes: number
+  likes: any
   createdAt: Date
   comments: any
   user: any
@@ -21,7 +22,7 @@ interface Post {
 
 interface ItemProps {
   post: Post,
-  likes: boolean
+  like: boolean
 }
 
 const Item = ({
