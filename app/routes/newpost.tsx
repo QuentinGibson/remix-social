@@ -7,7 +7,6 @@ import { redirect } from "@remix-run/node";
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
 import { requireUser } from "~/session.server";
 import { MdImage } from "react-icons/md";
-import "./newpost.css";
 import { useThemeContext, useToast } from "~/root";
 import { ActionFunction, LoaderFunction, UploadHandler } from "@remix-run/node";
 import {
