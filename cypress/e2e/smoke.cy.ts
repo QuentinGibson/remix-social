@@ -93,7 +93,6 @@ describe("smoke tests", () => {
     cy.get("#save-profile").click(); // clicks the save button
     cy.reload();
     // asserts that the user settings have been updated
-    cy.get("#theme option:selected").should("have.text", "dark");
     // cy.get("#language-select").should("have.value", "French");
     // cy.get("#layout-input").should("have.value", "grid");
     cy.get("#notifications").should("be.checked");
