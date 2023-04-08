@@ -28,7 +28,7 @@ interface ItemProps {
 const Item = ({
   post: { id, title, image, likes, createdAt, comments, user },
   like,
-}: ItemProps
+}: any
 ) => {
   const [referenceElement, setReferenceElement] =
     useState<HTMLButtonElement | null>(null);

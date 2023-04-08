@@ -1,6 +1,3 @@
-/**
- * This is a React function component that renders a Settings page with a form that allows users to update their account settings.
- */
 import { Form, Link, useFetcher, useLoaderData } from "@remix-run/react";
 import {
   DataFunctionArgs,
@@ -43,14 +40,16 @@ export default function SettingsPage() {
   }
   return (
     <main
-      className={`flex min-h-full flex-col justify-center ${darkMood ? "bg-black" : "bg-white"
-        }`}
+      className={`flex min-h-full flex-col justify-center ${
+        darkMood ? "bg-black" : "bg-white"
+      }`}
     >
       <div className="w-full max-w-screen-sm px-8 mx-auto">
         <div className="flex items-center justify-between">
           <h1
-            className={`mb-4 text-3xl font-semibold ${darkMood ? "text-white" : "text-black"
-              }`}
+            className={`mb-4 text-3xl font-semibold ${
+              darkMood ? "text-white" : "text-black"
+            }`}
           >
             Account
           </h1>
@@ -64,8 +63,9 @@ export default function SettingsPage() {
             <br />
           </label>
           <input
-            className={`${darkMood ? "bg-slate-100" : "bg-slate-200"
-              } w-96  border-0 p-1 text-lg`}
+            className={`${
+              darkMood ? "bg-slate-100" : "bg-slate-200"
+            } w-96  border-0 p-1 text-lg`}
             type="text"
             name="username"
             id="username"
@@ -80,8 +80,9 @@ export default function SettingsPage() {
             <br />
           </label>
           <input
-            className={`${darkMood ? "bg-slate-100" : "bg-slate-200"
-              }  w-96  border-0 p-1 text-lg`}
+            className={`${
+              darkMood ? "bg-slate-100" : "bg-slate-200"
+            }  w-96  border-0 p-1 text-lg`}
             type="email"
             name="useremail"
             id="useremail"
@@ -96,8 +97,9 @@ export default function SettingsPage() {
             <br />
           </label>
           <select
-            className={`${darkMood ? "bg-slate-100" : "bg-slate-200"
-              }  w-96 p-1 text-lg`}
+            className={`${
+              darkMood ? "bg-slate-100" : "bg-slate-200"
+            }  w-96 p-1 text-lg`}
             defaultValue={user.settings?.themeId}
             name="theme"
             id="theme"
@@ -130,8 +132,9 @@ export default function SettingsPage() {
             <br />
           </label>
           <select
-            className={`${darkMood ? "bg-slate-100" : "bg-slate-200"
-              }  w-96s p-1 text-lg`}
+            className={`${
+              darkMood ? "bg-slate-100" : "bg-slate-200"
+            }  w-96s p-1 text-lg`}
             name="accessibility"
             id="accessibility"
             defaultValue={user.settings?.accessibility ?? "none"}
@@ -148,8 +151,9 @@ export default function SettingsPage() {
             <br />
           </label>
           <select
-            className={`${darkMood ? "bg-slate-100" : "bg-slate-200"
-              }  w-96 p-1 text-lg`}
+            className={`${
+              darkMood ? "bg-slate-100" : "bg-slate-200"
+            }  w-96 p-1 text-lg`}
             name="privacy"
             id="privacy"
             defaultValue={user.settings?.privacy ?? "none"}
@@ -179,7 +183,7 @@ export default function SettingsPage() {
           </div>
         </userFetcher.Form>
         {user.isAdmin && (
-          <div className="flex gap-8 mx-auto max-screen-w-md">
+          <div className="flex gap-8 mx-auto max-screen-w-md mt-4">
             <Form method="post" action="/api/admin/populatePosts">
               <button
                 id="admin-posts"

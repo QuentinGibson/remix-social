@@ -18,7 +18,7 @@ interface CommentProps {
 }
 
 interface Props {
-  comment: CommentProps;
+  comment: any
 }
 
 // The Comment component renders a single comment within a list of comments
