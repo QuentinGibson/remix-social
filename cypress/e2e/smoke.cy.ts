@@ -98,7 +98,7 @@ describe("smoke tests", () => {
     cy.wait(1000);
     cy.visit("/settings");
     cy.wait(2000);
-    cy.content("Create Default Themes").click();
+    cy.contains("Create Default Themes").click();
 
     cy.wait(1000);
     cy.get("#theme").select("dark");
