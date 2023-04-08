@@ -1,11 +1,21 @@
-import { useActionData, useFetcher, useNavigation } from "@remix-run/react";
+/**
+ * Like button component for liking/unliking posts.
+ */
+
+import { useFetcher } from "@remix-run/react";
 import { RiHeartLine, RiHeartFill } from "react-icons/ri";
 import { useThemeContext, useToast } from "~/root";
 import { useOptionalUser } from "~/utils";
 import { action as likeAction } from "~/routes/api/forms/newlike";
 import { useEffect } from "react";
 
-const LikeButton = ({ like, count, postId }: any) => {
+interface LikeProps {
+  like: boolean,
+  count: number,
+  postId: string
+}
+
+const LikeButton = ({ like, count, postId }: LikeProps) => {
   const user = useOptionalUser();
   const likeFetcher = useFetcher<typeof likeAction>();
   const themeContext = useThemeContext();
@@ -57,9 +67,8 @@ const LikeButton = ({ like, count, postId }: any) => {
           {optimisticLike ? <RiHeartFill /> : <RiHeartLine />}
         </button>
         <p
-          className={`font-semibold ${
-            darkMood ? "text-white" : "text-dark"
-          } total-likes`}
+          className={`font-semibold ${darkMood ? "text-white" : "text-dark"
+            } total-likes`}
         >
           {count}
         </p>

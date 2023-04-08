@@ -1,3 +1,6 @@
+/** 
+This is a form component for creating a new comment with a character count display 
+*/
 import { useFetcher } from "@remix-run/react";
 import { useEffect, useRef, useState } from "react";
 import { BiSend } from "react-icons/bi";
@@ -28,7 +31,7 @@ export default function NewComment({ postId }: { postId: string }) {
         <textarea
           ref={inputRef}
           onChange={handleChange}
-          className="border-0 outline-none text-slate-800 font-xl w-10/12 bg-transparent px-2 py-4 h-28 resize-none rounded-lg leading-6"
+          className="w-10/12 px-2 py-4 leading-6 bg-transparent border-0 rounded-lg outline-none resize-none text-slate-800 font-xl h-28"
           name="comment"
           placeholder="Enter your new comment here!"
           id="newcomment"
@@ -37,7 +40,7 @@ export default function NewComment({ postId }: { postId: string }) {
           {count} / {maxCount}
         </p>
         <button
-          className="absolute bottom-0 right-0 rounded-lg text-black w-10 h-10"
+          className="absolute bottom-0 right-0 w-10 h-10 text-black rounded-lg"
           id="submit-button"
           type="submit"
         >
