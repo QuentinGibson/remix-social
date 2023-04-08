@@ -97,7 +97,7 @@ describe("smoke tests", () => {
 
     cy.wait(1000);
     cy.visit("/settings");
-    cy.wait(1000);
+    cy.wait(2000);
     cy.get("#admin-themes").click();
 
     cy.wait(1000);
