@@ -1,18 +1,34 @@
+/**
+ * This code is a React functional component that displays an item / post.
+ */
 import TimeAgo from "react-timeago";
 import { usePopper } from "react-popper";
 import { RiMore2Fill } from "react-icons/ri";
 import { Link, useFetcher, useSearchParams } from "@remix-run/react";
 import { useRef, useState } from "react";
 import LikeButton from "./posts/LikeButton";
-import { useThemeContext } from "~/root";
+
+interface Post {
+  id: string
+  title: string
+  image: string
+  likes: number
+  createdAt: Date
+  comments: any
+  user: any
+
+}
+
+interface ItemProps {
+  post: Post,
+  likes: boolean
+}
 
 const Item = ({
   post: { id, title, image, likes, createdAt, comments, user },
   like,
-}: {
-  post: any;
-  like: boolean;
-}) => {
+}: ItemProps
+) => {
   const [referenceElement, setReferenceElement] =
     useState<HTMLButtonElement | null>(null);
   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(
@@ -84,9 +100,8 @@ const Item = ({
             />
             <Link
               to={`/user/${user.id}`}
-              className={`ml-4 text-base font-semibold leading-4 post-user ${
-                darkMood ? "text-white" : "text-black"
-              }`}
+              className={`ml-4 text-base font-semibold leading-4 post-user ${darkMood ? "text-white" : "text-black"
+                }`}
               onMouseEnter={handleHoverTitle}
               onMouseLeave={handleLeaveTitle}
               style={{ color: isHoveredTitle ? themeContext.accent : "" }}
@@ -96,9 +111,8 @@ const Item = ({
           </div>
           <div className="flex items-center">
             <p
-              className={`text-base font-medium leading-loose text-right ${
-                darkMood ? "text-white" : "text-black"
-              } `}
+              className={`text-base font-medium leading-loose text-right ${darkMood ? "text-white" : "text-black"
+                } `}
             >
               <TimeAgo date={createdAt} />
             </p>
@@ -160,9 +174,8 @@ const Item = ({
         </div>
         <div className="py-3 ">
           <p
-            className={`text-2xl font-medium leading-loose ${
-              darkMood ? "text-white" : "text-black"
-            } post-title`}
+            className={`text-2xl font-medium leading-loose ${darkMood ? "text-white" : "text-black"
+              } post-title`}
           >
             <Link
               onMouseEnter={handleHover}
@@ -187,9 +200,8 @@ const Item = ({
               <LikeButton like={like} postId={id} count={likes.length} />
             </div>
             <div
-              className={`${
-                darkMood ? "text-white" : "text-gray-900"
-              } flex gap-1 items-center`}
+              className={`${darkMood ? "text-white" : "text-gray-900"
+                } flex gap-1 items-center`}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

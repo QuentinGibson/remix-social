@@ -1,3 +1,6 @@
+/**
+ * This is a TypeScript component that renders a form for creating a new post, including a file upload input, image preview, and loading indicators.
+ */
 import { useFetcher } from "@remix-run/react";
 import { ErrorBoundaryComponent, json } from "@remix-run/server-runtime";
 import { redirect } from "@remix-run/node";
@@ -76,9 +79,8 @@ export default function NewPostRoute() {
             id="title"
             disabled={isLoading}
             required
-            className={`${
-              darkMood ? "bg-slate-100" : "bg-slate-200"
-            } w-96 rounded-lg  outline-none pl-2 text-base mt-4 leading-loose disabled:opacity-50`}
+            className={`${darkMood ? "bg-slate-100" : "bg-slate-200"
+              } w-96 rounded-lg  outline-none pl-2 text-base mt-4 leading-loose disabled:opacity-50`}
             name="postTitle"
             type="text"
           />
@@ -91,23 +93,21 @@ export default function NewPostRoute() {
         </label>
         <button
           style={{ height: 430, width: 580 }}
-          className={`${
-            darkMood ? "bg-slate-100" : "bg-slate-200"
-          } relative flex justify-center items-center cursor-pointer ${
-            previewUrl ? "img-preview" : "no-preview"
-          }`}
+          className={`${darkMood ? "bg-slate-100" : "bg-slate-200"
+            } relative flex justify-center items-center cursor-pointer ${previewUrl ? "img-preview" : "no-preview"
+            }`}
           disabled={isLoading}
           onClick={handleUpload}
         >
           {!previewUrl && (
-            <div className="flex justify-center flex-col items-center">
+            <div className="flex flex-col items-center justify-center">
               <MdImage size="2em" />
               <p className="text-lg">Select a photo to upload</p>
               <button
                 style={{ background: themeContext.accent2 }}
                 id="upload-button"
                 disabled={isLoading}
-                className="px-2 py-2 text-white rounded-lg text-base disabled:opacity-50"
+                className="px-2 py-2 text-base text-white rounded-lg disabled:opacity-50"
               >
                 Choose File
               </button>
@@ -115,7 +115,7 @@ export default function NewPostRoute() {
           )}
           {previewUrl && (
             <img
-              className="w-full object-contain h-full"
+              className="object-contain w-full h-full"
               src={previewUrl}
               alt="Preview Image"
             />
@@ -128,7 +128,7 @@ export default function NewPostRoute() {
           name="upload"
           id="image"
           accept="image/png image/jpeg"
-          className="w-1 h-1 hidden"
+          className="hidden w-1 h-1"
           onChange={handleChange}
           ref={fileRef}
         />
@@ -137,9 +137,8 @@ export default function NewPostRoute() {
             type="submit"
             id="submit-button"
             disabled={isLoading}
-            className={`${
-              darkMood ? "text-white" : "text-black"
-            } px-3 py-1 rounded-lg disabled:opacity-50`}
+            className={`${darkMood ? "text-white" : "text-black"
+              } px-3 py-1 rounded-lg disabled:opacity-50`}
             style={{ background: themeContext.accent }}
           >
             {isLoading ? "Creating..." : "Create Post"}
@@ -196,16 +195,16 @@ export const action: ActionFunction = async ({ request }) => {
 export const ErrorBoundary: ErrorBoundaryComponent = ({ error }) => {
   return (
     <div className="pt-36">
-      <div className="flex justify-center items-center flex-col">
-        <div className="flex flex-col justify-center items-center mb-12 font-bold">
-          <h1 className="text-3xl mb-4">We're Sorry!</h1>
+      <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-center mb-12 font-bold">
+          <h1 className="mb-4 text-3xl">We're Sorry!</h1>
           <p className="text-xl">
             It seem like getting your request failed with the error below!
           </p>
         </div>
-        <div className="flex flex-col justify-center items-center bg-red-800 px-8 py-4 h-24 rounded text-white">
+        <div className="flex flex-col items-center justify-center h-24 px-8 py-4 text-white bg-red-800 rounded">
           Error Message:
-          <span className="text-base mt-2">{error.message}</span>
+          <span className="mt-2 text-base">{error.message}</span>
         </div>
       </div>
     </div>
