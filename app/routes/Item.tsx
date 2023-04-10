@@ -8,6 +8,7 @@ import { Link, useFetcher, useSearchParams } from "@remix-run/react";
 import { useRef, useState } from "react";
 import LikeButton from "./posts/LikeButton";
 import { useThemeContext } from "~/root";
+import { Avatar } from "@mui/material";
 
 interface Post {
   id: string
@@ -31,7 +32,7 @@ const Item = ({
 }: any
 ) => {
   const [referenceElement, setReferenceElement] =
-    useState<HTMLButtonElement | null>(null);
+    useState<HTMLElement | null>(null);
   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(
     null
   );
@@ -94,10 +95,10 @@ const Item = ({
       >
         <div className="flex items-center justify-between rounded-t ">
           <div className="flex items-center">
-            <img
+            <Avatar
               className="w-10 rounded-full"
               src={user.avatar}
-              alt="Our lovely user"
+              alt="Our lovely user avatar"
             />
             <Link
               to={`/user/${user.id}`}
@@ -117,15 +118,15 @@ const Item = ({
             >
               <TimeAgo date={createdAt} />
             </p>
-            <button
-              type="button"
+            <i
               ref={setReferenceElement}
+              aria-label="button"
               className="menu-button"
               onClick={togglePopper}
               style={{ color: darkMood ? "#FFFFFF" : "#000000" }}
             >
               <RiMore2Fill className="mt-1 ml-3 cursor-pointer" />
-            </button>
+            </i>
 
             {showPopper && (
               <div
@@ -174,7 +175,7 @@ const Item = ({
           </div>
         </div>
         <div className="py-3 ">
-          <p
+          <h3
             className={`text-2xl font-medium leading-loose ${darkMood ? "text-white" : "text-black"
               } post-title`}
           >
@@ -187,13 +188,13 @@ const Item = ({
             >
               {title}
             </Link>
-          </p>
+          </h3>
         </div>
 
         <img
           className="w-full max-w-full"
           src={image}
-          alt="an awesome user article"
+          alt={` an awesome user article by ${user.name} `}
         />
         <div className="box-border flex items-center justify-between w-full pt-5 ">
           <div className="flex gap-7">

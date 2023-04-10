@@ -13,8 +13,8 @@ export async function createDefaultTheme() {
       name: "default",
       primary: "hsl(165, 23%, 65%)",
       secondary: "hsl(170, 20%, 71%)",
-      accent: "hsl(178, 99%, 20%)",
-      accent2: "hsl(172,29%,35%)",
+      accent: "#2E5652",
+      accent2: "#5FA59C",
       mood: "light",
     },
   });
