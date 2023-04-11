@@ -95,7 +95,9 @@ export const action = async ({ request }: DataFunctionArgs) => {
     const commentBody = formData.get("comment") as string;
     const postId = formData.get("postId") as string;
     const user = await requireUser(request);
-    invariant(commentBody, "Please enter body for your comment");
+    invariant(commentBody.trim(), "Please enter body for your comment");
+    invariant(commentBody.trim().length < 280, "Comment is too long");
+    invariant(commentBody.trim().length > 3, "Comment is too short");
     invariant(postId, "Please enter a post id");
     const data = await createComment(user.id, postId, commentBody);
     return json({ ok: true, message: data, intent: "newcomment" });

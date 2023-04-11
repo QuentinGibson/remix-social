@@ -29,6 +29,9 @@ export default function NewComment({ postId }: { postId: string }) {
       <input type="hidden" name="postId" value={postId} />
       <div className="relative bg-slate-200 ">
         <textarea
+          title="newcomment"
+          required
+          aria-required="true"
           ref={inputRef}
           onChange={handleChange}
           className="w-10/12 px-2 py-4 leading-6 bg-transparent border-0 rounded-lg outline-none resize-none text-slate-800 font-xl h-28"
@@ -40,10 +43,11 @@ export default function NewComment({ postId }: { postId: string }) {
           {count} / {maxCount}
         </p>
         <button
-          className="absolute bottom-0 right-0 w-10 h-10 text-black rounded-lg"
+          className="absolute bottom-0 z-10 flex items-center justify-center w-20 h-10 text-black rounded-lg right-2 "
           id="submit-button"
           type="submit"
         >
+          Send
           <BiSend />
         </button>
       </div>
