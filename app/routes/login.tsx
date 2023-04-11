@@ -13,7 +13,6 @@ import { verifyLogin } from "~/models/user.server";
 import { safeRedirect, validateEmail } from "~/utils";
 import { useThemeContext, useToast } from "~/root";
 
-export const meta = () => ([{ title: "Login" }]);
 export async function loader({ request }: LoaderArgs) {
   const userId = await getUserId(request);
   if (userId) return redirect("/");

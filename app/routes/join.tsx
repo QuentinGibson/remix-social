@@ -15,7 +15,6 @@ import { safeRedirect, validateEmail } from "~/utils";
 import invariant from "tiny-invariant";
 import { useThemeContext } from "~/root";
 
-export const meta = () => ([{ title: "Sign Up" }]);
 
 export async function loader({ request }: LoaderArgs) {
   const userId = await getUserId(request);
