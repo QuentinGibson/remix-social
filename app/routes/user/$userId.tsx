@@ -98,7 +98,7 @@ export default function UserRoute() {
             >
               {user.name}
             </h1>
-            <div className="flex">
+            <div className={`flex ${darkMood ? "bg-white" : "bg-black"} px-4 py-2`}>
               <div className="mr-8">
                 <p
                   style={{ color: themeContext.accent2 }}
@@ -106,7 +106,7 @@ export default function UserRoute() {
                 >
                   Posts
                 </p>
-                <p className={`${darkMood ? "text-white" : "text-black"}`}>
+                <p className={`${darkMood ? "text-black" : "text-white"}`}>
                   {user.posts.length}
                 </p>
               </div>
@@ -117,7 +117,7 @@ export default function UserRoute() {
                 >
                   Comments
                 </p>
-                <p className={`${darkMood ? "text-white" : "text-black"}`}>
+                <p className={`${darkMood ? "text-black" : "text-white"}`}>
                   {user.comments.length}
                 </p>
               </div>
