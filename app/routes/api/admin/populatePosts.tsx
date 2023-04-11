@@ -1,4 +1,4 @@
-import { DataFunctionArgs, redirect } from "@remix-run/node";
+import { DataFunctionArgs, LoaderArgs, redirect } from "@remix-run/node";
 import { faker } from "@faker-js/faker";
 import { createPost } from "~/models/post.server";
 import { requireUser } from "~/session.server";
@@ -12,6 +12,9 @@ import { requireUser } from "~/session.server";
  * @param {DataFunctionArgs} args - The arguments for the data function, including the request object.
  * @returns {Promise<{ redirect: string, status: number }>} - A redirect object if the user is not an admin, or void if the posts were created successfully.
  */
+export const loader = async ({ request, params }: LoaderArgs) => {
+  redirect("/login")
+};
 export const action = async ({ request }: DataFunctionArgs) => {
   const user = await requireUser(request);
   if (!user.isAdmin) {

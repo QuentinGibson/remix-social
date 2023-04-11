@@ -23,6 +23,8 @@ export const loader: LoaderFunction = async ({ request }) => {
   return await requireUser(request);
 };
 
+export const meta = () => ([{ title: "New Post" }]);
+
 export default function NewPostRoute() {
   const fileRef = useRef<HTMLInputElement>(null);
   const themeContext = useThemeContext();

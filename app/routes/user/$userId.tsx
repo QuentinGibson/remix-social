@@ -19,6 +19,8 @@ interface TabPanelProps {
   value: number;
 }
 
+export const meta = () => ([{ title: "User" }]);
+
 export async function loader({ params }: LoaderArgs) {
   invariant(params.userId, "postId not found");
   const user = await getUserProfileById(params.userId);
@@ -99,7 +101,7 @@ export default function UserRoute() {
             <div className="flex">
               <div className="mr-8">
                 <p
-                  style={{ color: themeContext.accent }}
+                  style={{ color: themeContext.accent2 }}
                   className="font-bold total-label text-cyan-900"
                 >
                   Posts
@@ -110,8 +112,8 @@ export default function UserRoute() {
               </div>
               <div>
                 <p
-                  style={{ color: themeContext.accent }}
-                  className="font-bold total-label text-cyan-900"
+                  style={{ color: themeContext.accent2 }}
+                  className="font-bold total-label"
                 >
                   Comments
                 </p>

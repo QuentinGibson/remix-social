@@ -94,7 +94,7 @@ async function seed() {
       },
     });
   };
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 30; i++) {
     const post = await createPost(i.toString());
     for (let j = 0; j < 3; j++) {
       await createComments(post.id);

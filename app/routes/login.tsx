@@ -13,6 +13,7 @@ import { verifyLogin } from "~/models/user.server";
 import { safeRedirect, validateEmail } from "~/utils";
 import { useThemeContext, useToast } from "~/root";
 
+export const meta = () => ([{ title: "Login" }]);
 export async function loader({ request }: LoaderArgs) {
   const userId = await getUserId(request);
   if (userId) return redirect("/");
@@ -87,8 +88,8 @@ export default function LoginPage() {
   }, [actionData]);
 
   return (
-    <div className="flex min-h-full flex-col justify-center">
-      <div className="mx-auto w-full max-w-md px-8">
+    <div className="flex flex-col justify-center min-h-full">
+      <div className="w-full max-w-md px-8 mx-auto">
         <Form method="post" className="space-y-6">
           <div>
             <label
@@ -108,7 +109,7 @@ export default function LoginPage() {
                 autoComplete="email"
                 aria-invalid={actionData?.errors?.email ? true : undefined}
                 aria-describedby="email-error"
-                className="w-full rounded border border-gray-500 px-2 py-1 text-lg"
+                className="w-full px-2 py-1 text-lg border border-gray-500 rounded"
               />
               {actionData?.errors?.email && (
                 <div className="pt-1 text-red-700" id="email-error">
@@ -134,7 +135,7 @@ export default function LoginPage() {
                 autoComplete="current-password"
                 aria-invalid={actionData?.errors?.password ? true : undefined}
                 aria-describedby="password-error"
-                className="w-full rounded border border-gray-500 px-2 py-1 text-lg"
+                className="w-full px-2 py-1 text-lg border border-gray-500 rounded"
               />
               {actionData?.errors?.password && (
                 <div className="pt-1 text-red-700" id="password-error">
@@ -147,9 +148,8 @@ export default function LoginPage() {
           <input type="hidden" name="redirectTo" value={redirectTo} />
           <button
             type="submit"
-            className={`w-full rounded ${
-              darkMood ? "text-white" : "text-black"
-            }  py-2 px-4 `}
+            className={`w-full rounded ${darkMood ? "text-white" : "text-black"
+              }  py-2 px-4 `}
             style={{ background: themeContext.primary }}
           >
             Log in
@@ -160,16 +160,16 @@ export default function LoginPage() {
                 id="remember"
                 name="remember"
                 type="checkbox"
-                className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
               />
               <label
                 htmlFor="remember"
-                className="ml-2 block text-sm text-gray-900"
+                className="block ml-2 text-sm text-gray-900"
               >
                 Remember me
               </label>
             </div>
-            <div className="text-center text-sm text-gray-500">
+            <div className="text-sm text-center text-gray-500">
               Don't have an account?{" "}
               <Link
                 className="text-blue-500 underline"
@@ -191,16 +191,16 @@ export default function LoginPage() {
 export const ErrorBoundary: ErrorBoundaryComponent = ({ error }) => {
   return (
     <div className="pt-36">
-      <div className="flex justify-center items-center flex-col">
-        <div className="flex flex-col justify-center items-center mb-12 font-bold">
-          <h1 className="text-3xl mb-4">We're Sorry!</h1>
+      <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-center mb-12 font-bold">
+          <h1 className="mb-4 text-3xl">We're Sorry!</h1>
           <p className="text-xl">
             It seem like getting your request failed with the error below!
           </p>
         </div>
-        <div className="flex flex-col justify-center items-center bg-red-800 px-8 py-4 h-24 rounded text-white">
+        <div className="flex flex-col items-center justify-center h-24 px-8 py-4 text-white bg-red-800 rounded">
           Error Message:
-          <span className="text-base mt-2">{error.message}</span>
+          <span className="mt-2 text-base">{error.message}</span>
         </div>
       </div>
     </div>
